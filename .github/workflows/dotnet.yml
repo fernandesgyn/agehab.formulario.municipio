@@ -1,0 +1,33 @@
+name: ASP.NET Core 8 CI
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore tests/PortalSmokeTests/PortalSmokeTests.csproj
+      - name: Build
+        run: dotnet build tests/PortalSmokeTests/PortalSmokeTests.csproj --configuration Release --no-restore
+      - name: Run smoke tests
+        run: dotnet run --project tests/PortalSmokeTests/PortalSmokeTests.csproj --configuration Release --no-build
+      - name: Publish IIS
+        run: dotnet publish src/MunicipioPortal/MunicipioPortal.csproj --configuration Release --no-restore --output publish/painel
+      - name: Check ASP.NET Core IIS output
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "publish/painel/MunicipioPortal.dll")) { throw "Missing application assembly" }
+          if (-not (Test-Path "publish/painel/web.config")) { throw "Missing IIS web.config" }
+          if (-not (Test-Path "publish/painel/Data/municipios.json")) { throw "Missing municipality catalog" }
+      - name: Upload IIS package
+        uses: actions/upload-artifact@v4
+        with:
+          name: agehab-painel-aspnetcore8
+          path: publish/painel/
+          if-no-files-found: error

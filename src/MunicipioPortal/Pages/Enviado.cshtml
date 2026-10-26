@@ -1,0 +1,11 @@
+@page "/enviado"
+@model MunicipioPortal.Pages.EnviadoModel
+@{ ViewData["Title"] = "Formulário enviado"; }
+<div class="row justify-content-center"><div class="col-lg-7">
+<div class="card text-center"><div class="card-body py-5">
+ <div class="success-icon mb-3"><i class="bi bi-check-circle-fill"></i></div>
+ <h4 class="mb-2">Informações registradas com sucesso</h4>
+ <p class="text-muted">As respostas do município foram gravadas no banco de dados da AGEHAB.</p>
+ <div class="protocol-box mb-4">Protocolo de envio <strong>#@Model.Protocolo</strong></div>
+ <div><a asp-page="/Index" class="btn btn-outline-secondary">Voltar ao formulário</a></div>
+</div></div></div></div>

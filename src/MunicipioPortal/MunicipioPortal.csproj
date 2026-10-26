@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>MunicipioPortal</RootNamespace>
+    <AssemblyName>MunicipioPortal</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.7" />
+    <Content Update="Data/municipios.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
