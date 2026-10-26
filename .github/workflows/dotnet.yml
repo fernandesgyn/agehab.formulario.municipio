@@ -19,3 +19,15 @@ jobs:
         run: dotnet run --project tests/PortalSmokeTests/PortalSmokeTests.csproj --configuration Release --no-build
       - name: Publish IIS
         run: dotnet publish src/MunicipioPortal/MunicipioPortal.csproj --configuration Release --no-restore --output publish/painel
+      - name: Check ASP.NET Core IIS output
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "publish/painel/MunicipioPortal.dll")) { throw "Missing application assembly" }
+          if (-not (Test-Path "publish/painel/web.config")) { throw "Missing IIS web.config" }
+          if (-not (Test-Path "publish/painel/Data/municipios.json")) { throw "Missing municipality catalog" }
+      - name: Upload IIS package
+        uses: actions/upload-artifact@v4
+        with:
+          name: agehab-painel-aspnetcore8
+          path: publish/painel/
+          if-no-files-found: error
