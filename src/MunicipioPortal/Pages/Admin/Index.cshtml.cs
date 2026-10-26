@@ -53,13 +53,13 @@ public sealed class IndexModel(RespostaRepository repositorio,
         var cabecalho = new[] { "Id", "CodigoIBGE", "Municipio" }
             .Concat(campos.Select(c => c.Coluna))
             .Concat(["ProgramaHabitacionalTipo", "ProgramaProprioDetalhes", "CriadoEm"]);
-        sb.AppendLine(string.Join(';', cabecalho.Select(Csv)));
+        sb.AppendLine(string.Join(";", cabecalho.Select(Csv)));
         foreach (var r in registros)
         {
             var valores = new object?[] { r.Id, r.CodigoIbge, r.Municipio }
                 .Concat(campos.Select(c => (object?)r.Quantidades[c.Chave]))
                 .Concat([r.Programa, r.Detalhes, r.CriadoEm.ToString("yyyy-MM-dd HH:mm:ss")]);
-            sb.AppendLine(string.Join(';', valores.Select(Csv)));
+            sb.AppendLine(string.Join(";", valores.Select(Csv)));
         }
         var conteudo = Encoding.UTF8.GetPreamble()
             .Concat(Encoding.UTF8.GetBytes(sb.ToString())).ToArray();
