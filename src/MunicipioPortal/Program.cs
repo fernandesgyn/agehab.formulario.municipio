@@ -44,7 +44,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "Agehab.Municipios.Auth";
         options.Cookie.HttpOnly = true;
         options.Cookie.SameSite = SameSiteMode.Lax;
-        options.Cookie.SecurePolicy = builder.Environment.IsProduction
+        options.Cookie.SecurePolicy = builder.Environment.IsProduction()
             ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest;
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
@@ -52,13 +52,16 @@ builder.Services.AddAuthorization();
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-    options.AddFixedWindowLimiter("acesso", cfg =>
-    {
-        cfg.PermitLimit = 10;
-        cfg.Window = TimeSpan.FromMinutes(5);
-        cfg.QueueLimit = 0;
-        cfg.AutoReplenishment = true;
-    });
+    options.AddPolicy("acesso", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10,
+                Window = TimeSpan.FromMinutes(5),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
 });
 builder.Services.AddHsts(options => options.MaxAge = TimeSpan.FromDays(180));
 var app = builder.Build();
