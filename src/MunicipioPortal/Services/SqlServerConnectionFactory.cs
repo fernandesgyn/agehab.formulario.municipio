@@ -2,8 +2,11 @@ using Microsoft.Data.SqlClient;
 
 namespace MunicipioPortal.Services;
 
-public sealed class SqlServerNaoConfiguradoException() :
-    InvalidOperationException("ConnectionStrings:Municipios não foi configurada no ambiente.");
+public sealed class SqlServerNaoConfiguradoException : InvalidOperationException
+{
+    public SqlServerNaoConfiguradoException()
+        : base("ConnectionStrings:Municipios não foi configurada no ambiente.") { }
+}
 
 public static class SqlServerConnectionFactory
 {
@@ -13,7 +16,7 @@ public static class SqlServerConnectionFactory
         if (string.IsNullOrWhiteSpace(connectionString))
             throw new SqlServerNaoConfiguradoException();
 
-        // A senha jamais é registrada em logs, telas ou arquivos do repositório.
+        // Credenciais nunca são incluídas nas mensagens de resposta.
         return new SqlConnection(connectionString);
     }
 }
