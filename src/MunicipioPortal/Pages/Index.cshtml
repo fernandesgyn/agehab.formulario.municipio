@@ -11,10 +11,17 @@
   <p class="mb-0 text-muted">Informe os dados do seu município. Quando não houver profissionais em uma categoria, registre zero.</p></div>
  </div></div>
 
- @if (!ViewData.ModelState.IsValid)
+ @if (!string.IsNullOrEmpty(Model.ErroPersistencia))
  {
  <div class="alert alert-danger" role="alert">
-  <strong>Há informações que precisam ser conferidas.</strong>
+  <strong>Não foi possível registrar as respostas.</strong>
+  <p class="mb-0">@Model.ErroPersistencia</p>
+ </div>
+ }
+ else if (!ViewData.ModelState.IsValid)
+ {
+ <div class="alert alert-danger" role="alert">
+  <strong>Confira os campos indicados no formulário.</strong>
   <div asp-validation-summary="ModelOnly"></div>
  </div>
  }
