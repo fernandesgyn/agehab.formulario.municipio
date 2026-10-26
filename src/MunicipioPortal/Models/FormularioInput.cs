@@ -8,19 +8,3 @@ public sealed class FormularioInput
     public string? Programa { get; set; }
     public string? Detalhes { get; set; }
 }
-
-public sealed record RespostaMunicipal(
-    long Id,
-    int CodigoIbge,
-    string Municipio,
-    DateTime CriadoEm,
-    string Programa,
-    string? Detalhes,
-    IReadOnlyDictionary<string, int> Quantidades)
-{
-    public int Total(int numero) => QuestionarioDefinition.Areas
-        .Single(a => a.Numero == numero).Campos
-        .Sum(c => Quantidades.GetValueOrDefault(c.Chave));
-}
-
-public sealed class AdminIdentity { }

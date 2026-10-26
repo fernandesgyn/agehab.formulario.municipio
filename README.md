@@ -1,87 +1,114 @@
-# Formulário dos Municípios Goianos — AGEHAB
+# Agência Goiana de Habitação - AGEHAB
 
-Aplicação exclusivamente **ASP.NET Core 8 (Razor Pages)**, preparada para IIS em Windows Server e publicação em **https://painel.agehab.go.gov.br/**. Mantém o AdminLTE 4 e a identidade visual do sistema Diárias AGEHAB.
+Formulário para municípios goianos, implementado em ASP.NET Core 8 / Razor Pages, com leiaute AdminLTE do projeto Diárias AGEHAB e persistência em Microsoft SQL Server, sem PHP ou MySQL. Hospedagem prevista: https://painel.agehab.go.gov.br/ (IIS / Windows Server).
 
-> O código está preparado para o endereço, mas o DNS, certificado HTTPS, IIS e a conexão SQL Server precisam ser configurados pela infraestrutura. Não há publicação remota automática.
+**Não existe área administrativa.** As respostas são consultadas diretamente no SQL Server.
 
-## Tecnologia e estrutura
+## Funcionalidades
 
-- **ASP.NET Core 8 + Razor Pages**, C# e Bootstrap/AdminLTE 4.
-- **SQL Server** via Microsoft.Data.SqlClient (ADO.NET parametrizado).
-- Banco inicial em database/schema.sql, com 246 municípios do IBGE e 16 campos quantitativos. Sem EF Core/migrations.
-- Código em src/MunicipioPortal; testes em tests/PortalSmokeTests.
-- A origem do formulário é a planilha Forms para Municípios Goianos.xlsx: município, cadastro/seleção de famílias, visitas sociais, TS pré e pós ocupação; efetivos/terceirizados/temporários/comissionados em cada bloco; programa habitacional próprio e quatro alternativas.
+- Seleção dos 246 municípios do Estado de Goiás (código IBGE).
+- Quatro blocos de profissionais por vínculo (efetivos, terceirizados, temporários e comissionados).
+- Questão sobre programa habitacional próprio, com detalhamento obrigatório quando afirmativo.
+- Validação de números inteiros de 0 a 100.000 e totais automáticos.
+- Inserção parametrizada no SQL Server e confirmação com protocolo somente após salvar.
+- Uma única resposta por município (restrição UNIQUE no banco).
+- Apenas as rotas /, /enviado e /erro. Não existem rotas de administração.
 
-## Banco de dados SQL Server
+## Requisitos
 
-Execute **uma única vez** database/schema.sql no SQL Server Management Studio em uma base nova. O script cria AGEHAB_FORMULARIO_MUNICIPIOS, dbo.Municipios e dbo.RespostasMunicipais. Se já tiver instalado a versão PHP anterior, o esquema foi preservado e **não deve ser recriado**.
+- SDK .NET 8 para desenvolvimento; ASP.NET Core 8 Hosting Bundle no servidor IIS.
+- SQL Server 2019 ou posterior com o banco e tabelas provisionados.
+- Certificado TLS/HTTPS e DNS para painel.agehab.go.gov.br.
+- Acesso do navegador aos CDNs de Bootstrap, AdminLTE e Bootstrap Icons.
 
-Crie uma conta SQL da aplicação com permissões mínimas de SELECT nas duas tabelas e INSERT em dbo.RespostasMunicipais, sem CREATE/ALTER/DROP. O app não consulta o banco de RH do Diárias.
+## 1. Instalação do banco SQL Server
 
-## Configuração de ambiente (não versionar segredos)
+Em um **banco novo**, execute uma única vez database/schema.sql no SSMS ou sqlcmd. Cria AGEHAB_FORMULARIO_MUNICIPIOS, dbo.Municipios e dbo.RespostasMunicipais, com as 246 cidades.
 
-Configure no servidor IIS, fora do repositório, estas variáveis de ambiente da aplicação:
+Se já tiver criado a base da implementação anterior, **não reaplique o script** nem exclua seus dados. Esta versão não executa migrations, CREATE TABLE nem ALTER TABLE em requisições web.
 
-    ConnectionStrings__Municipios=Server=SERVIDOR,1433;Database=AGEHAB_FORMULARIO_MUNICIPIOS;User Id=USUARIO;Password=SENHA;Encrypt=True;TrustServerCertificate=False;
+Configure uma identidade SQL com SELECT nas duas tabelas e INSERT em dbo.RespostasMunicipais; não conceda direitos de DDL ao usuário da aplicação.
 
-Use certificado válido e confiável para conexões SQL criptografadas. Excepcionalmente em homologação interna, sem certificado SQL válido, ajuste Encrypt/TrustServerCertificate de forma consciente. Não exponha o SQL Server à internet.
+## 2. Configuração indispensável da conexão no IIS
 
-Para gerar hash de senha de administração, execute localmente:
+O arquivo versionado src/MunicipioPortal/appsettings.json mantém **ConnectionStrings:Municipios vazio de propósito**, para não publicar senhas no Git. Sem configurar esta chave no servidor IIS, o envio apresentará **BD-CONFIG**.
 
-    dotnet run --project src/MunicipioPortal/MunicipioPortal.csproj -- --gerar-hash-admin
+Defina a variável de ambiente **ConnectionStrings__Municipios** no processo do ASP.NET Core/IIS.
 
-Informe a senha no terminal (mínimo de 12 caracteres) e configure o hash no servidor:
+Exemplo para autenticação SQL e certificado SQL Server confiável:
 
-    Admin__PasswordHash=HASH_GERADO
+    Server=SERVIDOR_SQL,1433;Database=AGEHAB_FORMULARIO_MUNICIPIOS;User Id=USUARIO_APLICACAO;Password=SENHA;Encrypt=True;TrustServerCertificate=False;
 
-A autenticação administrativa usa hash ASP.NET Core Identity e cookie. As contas municipais **não são autenticadas** nessa primeira versão.
+Exemplo para autenticação integrada Windows: a identidade do Application Pool deve possuir acesso ao banco SQL Server.
 
-## Desenvolvimento e testes
+    Server=SERVIDOR_SQL,1433;Database=AGEHAB_FORMULARIO_MUNICIPIOS;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;
 
-Requer SDK **.NET 8**. Na raiz do Git:
+Configure essa variável no ambiente do Application Pool ou por método seguro adotado pela infraestrutura. Recicle o pool. Se o IIS iniciar a aplicação por identidade diferente da conta usada no teste de terminal, especialmente com Integrated Security, o resultado poderá ser diferente.
+
+Não coloque senhas reais no repositório nem em arquivos públicos. Prefira certificado SQL Server confiável. Se a instalação usar instância/porta diferente, ajuste o Server de acordo com a configuração real. Não exponha SQL Server à internet.
+
+### Diagnóstico do SQL Server (somente linha de comando)
+
+    dotnet run --project src/MunicipioPortal/MunicipioPortal.csproj -- --verificar-sqlserver
+
+Execute no servidor com a conexão configurada no ambiente da execução. O comando **não cria tabelas, não insere dados e não precisa da área administrativa**. Confere conexão, duas tabelas, colunas obrigatórias, 246 municípios e permissão INSERT. A saída usa códigos sem exibir senhas.
+
+Para um teste local em PowerShell com autenticação integrada, no mesmo terminal:
+
+    $env:ConnectionStrings__Municipios = 'Server=SERVIDOR_SQL,1433;Database=AGEHAB_FORMULARIO_MUNICIPIOS;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;'
+    dotnet run --project src/MunicipioPortal/MunicipioPortal.csproj -- --verificar-sqlserver
+
+**A execução local não substitui o teste sob a identidade do IIS.**
+
+### Mensagens da aplicação
+
+- BD-CONFIG: ConnectionStrings__Municipios está vazia. Configure no IIS e recicle.
+- BD-CONEXAO: SQL Server, porta, DNS ou firewall não acessível.
+- BD-ACESSO: login SQL recusado ou banco inacessível para a conta.
+- BD-ESTRUTURA: tabelas/colunas ausentes; conferir database/schema.sql.
+- BD-PERMISSAO: faltam direitos INSERT.
+- BD-TEMPO: operação ultrapassou limite de tempo.
+- BD-OPERACAO: falha restante; confira logs ASP.NET Core no servidor.
+
+A página exibe uma mensagem segura e preserva o preenchimento; os logs incluem a exceção técnica. Um envio malsucedido nunca gera protocolo. Duplicatas mostram erro no município, sem revelar dados de respostas existentes.
+
+## 3. Execução local
 
     dotnet restore src/MunicipioPortal/MunicipioPortal.csproj
     dotnet run --project src/MunicipioPortal/MunicipioPortal.csproj --urls http://localhost:5080
 
-Formulário: http://localhost:5080/; administração: http://localhost:5080/acesso. Sem conexão SQL, o formulário aparece, mas não é possível concluir envios.
+Acesse http://localhost:5080/. A página será exibida mesmo quando a conexão não estiver configurada, mas só gravará depois da conexão e do banco estarem prontos.
 
-Smoke tests sem SQL:
+Teste sem banco:
 
     dotnet run --project tests/PortalSmokeTests/PortalSmokeTests.csproj
 
-O GitHub Actions compila, executa os testes e publica em diretório de artefato.
+## 4. Implantação IIS — painel.agehab.go.gov.br
 
-## Publicação IIS: painel.agehab.go.gov.br
+1. Provisionar DNS e certificado HTTPS para painel.agehab.go.gov.br.
+2. Instalar ASP.NET Core 8 Hosting Bundle no Windows Server.
+3. Compilar: dotnet publish src/MunicipioPortal/MunicipioPortal.csproj -c Release -o C:\Publicacao\painel-agehab
+4. Criar site IIS, com pool dedicado e .NET CLR Version: No Managed Code.
+5. Criar binding https/443 para painel.agehab.go.gov.br (SNI e certificado válido).
+6. Configurar ConnectionStrings__Municipios e as permissões no SQL Server. Reciclar o pool.
+7. Executar teste de homologação usando município ainda não respondido e consultar a tabela.
 
-1. Criar registro DNS A ou CNAME de **painel.agehab.go.gov.br** para o servidor/reverse proxy corporativo autorizado.
-2. Instalar ASP.NET Core **8 Hosting Bundle** no Windows Server com IIS e reiniciar serviço IIS após instalação.
-3. Compilar em Windows no diretório do repositório:
+O web.config é gerado automaticamente pelo dotnet publish. Não reutilize o arquivo do antigo sistema PHP.
 
-       dotnet publish src/MunicipioPortal/MunicipioPortal.csproj -c Release -o C:\Publicacao\painel-agehab
+## 5. Consultar respostas diretamente no SQL Server
 
-4. Criar site no IIS com diretório físico da publicação; application pool dedicado, **.NET CLR Version: No Managed Code**, modo integrado e identidade de menores privilégios.
-5. Em **Bindings**, configurar HTTPS, porta 443, host name **painel.agehab.go.gov.br**, SNI e certificado válido para o domínio. Configurar também redirecionamento HTTP → HTTPS quando apropriado.
-6. Injetar as variáveis ConnectionStrings__Municipios e Admin__PasswordHash no ambiente do site (com acesso restrito), reciclar o App Pool e garantir firewall permitindo o IIS alcançar o SQL Server.
-7. Validar a raiz, /acesso e /administracao com banco de **homologação** antes de apontar usuários finais.
+Execute no SSMS:
 
-O .NET SDK gera automaticamente o web.config para o módulo ASP.NET Core no dotnet publish; **não usar web.config legado do PHP**. A configuração de Production restringe o host a painel.agehab.go.gov.br, habilita HSTS e exige HTTPS.
+    USE AGEHAB_FORMULARIO_MUNICIPIOS;
+    SELECT R.*, M.Nome AS NomeMunicipio
+    FROM dbo.RespostasMunicipais AS R
+    JOIN dbo.Municipios AS M ON M.CodigoIBGE = R.CodigoIBGE
+    ORDER BY M.Nome;
 
-## Endereços
+Nenhuma integração com o banco ERP_RH_AGEHAB é exigida.
 
-| Rota | Função |
-| --- | --- |
-| / | Questionário público |
-| /enviado | Protocolo de confirmação |
-| /acesso | Login administrativo |
-| /administracao | Listagem, totais e exportação CSV |
-| /administracao/resposta/{id} | Consulta detalhada autenticada |
+## Segurança
 
-## Regras e limitações
+O formulário não autentica quem responde em nome do município. Antes de enviar publicamente para órgãos municipais, recomenda-se validar a identidade do respondente ou controlar convites, pois o primeiro envio bloqueará novos envios do mesmo município.
 
-- Lista **246 municípios**, com código IBGE.
-- Quatro grupos de quatro quantitativos, aceitando inteiros de 0 a 100.000; total por bloco exibido automaticamente.
-- Questão 6 obrigatória, com detalhamento obrigatório de nome e benefício quando selecionado programa municipal próprio.
-- Gravação parametrizada em SQL Server, validação no servidor, proteção antiforgery, uma única resposta por município, protocolo por ID e exportação CSV protegida.
-- Formulário municipal é público e **não valida quem está respondendo em nome do município**. Antes de divulgar oficialmente, considere convites individualizados ou autenticação institucional; um terceiro pode registrar dados incorretos e bloquear novo envio.
-- Administração usa uma senha compartilhada, não autenticação individual no Active Directory.
-- DNS, IIS, certificado e conexão SQL precisam ser implantados e testados no ambiente AGEHAB. O workflow de CI não acessa esse servidor.
+Os testes automatizados incluem compilação, verificação do catálogo, códigos de diagnóstico e publicação para IIS, mas não podem comprovar acesso ao SQL Server real sem credenciais, infraestrutura e um ambiente de homologação.

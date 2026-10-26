@@ -1,59 +1,44 @@
 @{
-    string currentPath = Context.Request.Path.Value ?? "";
-    bool adminPage = currentPath.StartsWith("/administracao", StringComparison.OrdinalIgnoreCase) ||
-                     currentPath.StartsWith("/acesso", StringComparison.OrdinalIgnoreCase);
-    string title = (string?)ViewData["Title"] ?? "Formulário dos Municípios Goianos";
+    string title = (string?)ViewData["Title"] ?? "Agência Goiana de Habitação - AGEHAB";
 }
 <!doctype html>
 <html lang="pt-BR" data-bs-theme="light">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="light">
-<title>@title | AGEHAB</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.10.0/dist/css/adminlte.min.css">
-<link rel="stylesheet" asp-append-version="true" href="~/css/admin.css">
-<link rel="stylesheet" asp-append-version="true" href="~/css/adminlte-overrides.css">
-<link rel="stylesheet" asp-append-version="true" href="~/css/formulario.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>@title | AGEHAB</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.10.0/dist/css/adminlte.min.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/css/admin.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/css/adminlte-overrides.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/css/formulario.css">
 </head>
-<body class="layout-fixed sidebar-expand-lg bg-body-tertiary portal-admin-body">
+<body class="portal-public-shell bg-body-tertiary">
 <div class="app-wrapper">
-<nav class="app-header navbar navbar-expand bg-body border-bottom">
- <div class="container-fluid">
-  <ul class="navbar-nav">
-   <li class="nav-item"><a class="nav-link" data-lte-toggle="sidebar" href="#" role="button" aria-label="Abrir menu"><i class="bi bi-list"></i></a></li>
-   <li class="nav-item d-none d-sm-block"><span class="nav-link header-system-name">Formulário dos Municípios Goianos</span></li>
-  </ul>
-  <span class="navbar-text ms-auto small text-muted">AGEHAB • Goiás</span>
- </div>
-</nav>
-<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="light">
- <div class="sidebar-brand"><a asp-page="/Index" class="brand-link d-flex align-items-center gap-2 text-decoration-none">
- <img src="~/img/logo-agehab.svg" width="66" height="40" alt="AGEHAB">
- <span class="brand-text fw-semibold small">Formulário Municipal</span>
- </a></div>
- <div class="sidebar-wrapper"><nav class="mt-2">
-  <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
-   <li class="nav-item">
-    <a asp-page="/Index" class="nav-link @(!adminPage ? "active" : "")"><i class="nav-icon bi bi-ui-checks"></i><p>Formulário</p></a>
-   </li>
-   <li class="nav-item">
-    <a asp-page="/Admin/Index" class="nav-link @(adminPage ? "active" : "")"><i class="nav-icon bi bi-table"></i><p>Área administrativa</p></a>
-   </li>
-  </ul>
- </nav></div>
-</aside>
-<main class="app-main">
- <div class="app-content-header"><div class="container-fluid">
-  <h3 class="mb-1">@title</h3>
-  <p class="text-muted mb-0 small">Agência Goiana de Habitação — AGEHAB</p>
- </div></div>
- <div class="app-content"><div class="container-fluid">
-  @RenderBody()
- </div></div>
-</main>
-<footer class="app-footer"><strong>AGEHAB</strong> — Formulário dos Municípios Goianos</footer>
+    <nav class="app-header navbar navbar-expand bg-body border-bottom">
+        <div class="container-fluid">
+            <a asp-page="/Index" class="navbar-brand d-flex align-items-center gap-3 text-decoration-none py-2">
+                <img src="~/img/logo-agehab.svg" width="78" height="46" alt="AGEHAB">
+                <span class="header-system-name">Agência Goiana de Habitação - AGEHAB</span>
+            </a>
+        </div>
+    </nav>
+    <main class="app-main">
+        <div class="app-content-header">
+            <div class="container-fluid">
+                <h3 class="mb-1">@title</h3>
+            </div>
+        </div>
+        <div class="app-content">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+    <footer class="app-footer">
+        <div class="container-fluid">Agência Goiana de Habitação - AGEHAB</div>
+    </footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@4.10.0/dist/js/adminlte.min.js"></script>
