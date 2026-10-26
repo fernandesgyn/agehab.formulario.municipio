@@ -1,0 +1,91 @@
+html[data-bs-theme="light"] {
+  color-scheme: light;
+}
+
+/* A consulta pública reutiliza o shell do AdminLTE sem sidebar. */
+.portal-public-shell .app-wrapper {
+  min-height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "lte-app-header"
+    "lte-app-main"
+    "lte-app-footer";
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.portal-public-shell .app-header {
+  grid-area: lte-app-header;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.portal-public-shell .app-main {
+  grid-area: lte-app-main;
+  min-width: 0;
+}
+
+.portal-public-shell .app-footer {
+  grid-area: lte-app-footer;
+}
+
+@media (max-width: 767.98px) {
+  .portal-public-shell .app-footer .container {
+    font-size: .875rem;
+  }
+}
+
+/* Impressão da pesquisa pública: privilegia o conteúdo e remove navegação/ações. */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  html,
+  body,
+  .portal-public-shell,
+  .portal-public-shell .app-wrapper,
+  .portal-public-shell .app-main {
+    background: #fff !important;
+  }
+
+  .portal-public-shell .app-header,
+  .portal-public-shell .app-footer,
+  .portal-public-shell .breadcrumb,
+  .portal-public-shell .d-print-none,
+  .portal-public-shell .portal-action-btn,
+  .portal-public-shell .btn {
+    display: none !important;
+  }
+
+  .portal-public-shell .app-content-header,
+  .portal-public-shell .app-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .portal-public-shell .app-content > .container,
+  .portal-public-shell .app-content-header > .container {
+    width: 100% !important;
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .portal-public-shell .card {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  .portal-public-shell .list-group-item,
+  .portal-public-shell dl,
+  .portal-public-shell p {
+    break-inside: avoid;
+  }
+
+  .portal-public-shell a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+}

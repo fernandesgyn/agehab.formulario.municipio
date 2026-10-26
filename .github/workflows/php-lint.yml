@@ -1,0 +1,12 @@
+name: PHP validation
+on: [push, pull_request]
+jobs:
+ lint:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v4
+   - uses: shivammathur/setup-php@v2
+     with:
+      php-version: '8.4'
+   - run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
+   - run: php -d zend.assertions=1 -d assert.exception=1 tests/questionnaire.php
