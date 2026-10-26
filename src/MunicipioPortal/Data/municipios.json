@@ -1,0 +1,986 @@
+[
+  {
+    "CodigoIbge": 5200050,
+    "Nome": "Abadia de Goiás"
+  },
+  {
+    "CodigoIbge": 5200100,
+    "Nome": "Abadiânia"
+  },
+  {
+    "CodigoIbge": 5200134,
+    "Nome": "Acreúna"
+  },
+  {
+    "CodigoIbge": 5200159,
+    "Nome": "Adelândia"
+  },
+  {
+    "CodigoIbge": 5200175,
+    "Nome": "Água Fria de Goiás"
+  },
+  {
+    "CodigoIbge": 5200209,
+    "Nome": "Água Limpa"
+  },
+  {
+    "CodigoIbge": 5200258,
+    "Nome": "Águas Lindas de Goiás"
+  },
+  {
+    "CodigoIbge": 5200308,
+    "Nome": "Alexânia"
+  },
+  {
+    "CodigoIbge": 5200506,
+    "Nome": "Aloândia"
+  },
+  {
+    "CodigoIbge": 5200555,
+    "Nome": "Alto Horizonte"
+  },
+  {
+    "CodigoIbge": 5200605,
+    "Nome": "Alto Paraíso de Goiás"
+  },
+  {
+    "CodigoIbge": 5200803,
+    "Nome": "Alvorada do Norte"
+  },
+  {
+    "CodigoIbge": 5200829,
+    "Nome": "Amaralina"
+  },
+  {
+    "CodigoIbge": 5200852,
+    "Nome": "Americano do Brasil"
+  },
+  {
+    "CodigoIbge": 5200902,
+    "Nome": "Amorinópolis"
+  },
+  {
+    "CodigoIbge": 5201108,
+    "Nome": "Anápolis"
+  },
+  {
+    "CodigoIbge": 5201207,
+    "Nome": "Anhanguera"
+  },
+  {
+    "CodigoIbge": 5201306,
+    "Nome": "Anicuns"
+  },
+  {
+    "CodigoIbge": 5201405,
+    "Nome": "Aparecida de Goiânia"
+  },
+  {
+    "CodigoIbge": 5201454,
+    "Nome": "Aparecida do Rio Doce"
+  },
+  {
+    "CodigoIbge": 5201504,
+    "Nome": "Aporé"
+  },
+  {
+    "CodigoIbge": 5201603,
+    "Nome": "Araçu"
+  },
+  {
+    "CodigoIbge": 5201702,
+    "Nome": "Aragarças"
+  },
+  {
+    "CodigoIbge": 5201801,
+    "Nome": "Aragoiânia"
+  },
+  {
+    "CodigoIbge": 5202155,
+    "Nome": "Araguapaz"
+  },
+  {
+    "CodigoIbge": 5202353,
+    "Nome": "Arenópolis"
+  },
+  {
+    "CodigoIbge": 5202502,
+    "Nome": "Aruanã"
+  },
+  {
+    "CodigoIbge": 5202601,
+    "Nome": "Aurilândia"
+  },
+  {
+    "CodigoIbge": 5202809,
+    "Nome": "Avelinópolis"
+  },
+  {
+    "CodigoIbge": 5203104,
+    "Nome": "Baliza"
+  },
+  {
+    "CodigoIbge": 5203203,
+    "Nome": "Barro Alto"
+  },
+  {
+    "CodigoIbge": 5203302,
+    "Nome": "Bela Vista de Goiás"
+  },
+  {
+    "CodigoIbge": 5203401,
+    "Nome": "Bom Jardim de Goiás"
+  },
+  {
+    "CodigoIbge": 5203500,
+    "Nome": "Bom Jesus de Goiás"
+  },
+  {
+    "CodigoIbge": 5203559,
+    "Nome": "Bonfinópolis"
+  },
+  {
+    "CodigoIbge": 5203575,
+    "Nome": "Bonópolis"
+  },
+  {
+    "CodigoIbge": 5203609,
+    "Nome": "Brazabrantes"
+  },
+  {
+    "CodigoIbge": 5203807,
+    "Nome": "Britânia"
+  },
+  {
+    "CodigoIbge": 5203906,
+    "Nome": "Buriti Alegre"
+  },
+  {
+    "CodigoIbge": 5203939,
+    "Nome": "Buriti de Goiás"
+  },
+  {
+    "CodigoIbge": 5203962,
+    "Nome": "Buritinópolis"
+  },
+  {
+    "CodigoIbge": 5204003,
+    "Nome": "Cabeceiras"
+  },
+  {
+    "CodigoIbge": 5204102,
+    "Nome": "Cachoeira Alta"
+  },
+  {
+    "CodigoIbge": 5204201,
+    "Nome": "Cachoeira de Goiás"
+  },
+  {
+    "CodigoIbge": 5204250,
+    "Nome": "Cachoeira Dourada"
+  },
+  {
+    "CodigoIbge": 5204300,
+    "Nome": "Caçu"
+  },
+  {
+    "CodigoIbge": 5204409,
+    "Nome": "Caiapônia"
+  },
+  {
+    "CodigoIbge": 5204508,
+    "Nome": "Caldas Novas"
+  },
+  {
+    "CodigoIbge": 5204557,
+    "Nome": "Caldazinha"
+  },
+  {
+    "CodigoIbge": 5204607,
+    "Nome": "Campestre de Goiás"
+  },
+  {
+    "CodigoIbge": 5204656,
+    "Nome": "Campinaçu"
+  },
+  {
+    "CodigoIbge": 5204706,
+    "Nome": "Campinorte"
+  },
+  {
+    "CodigoIbge": 5204805,
+    "Nome": "Campo Alegre de Goiás"
+  },
+  {
+    "CodigoIbge": 5204854,
+    "Nome": "Campo Limpo de Goiás"
+  },
+  {
+    "CodigoIbge": 5204904,
+    "Nome": "Campos Belos"
+  },
+  {
+    "CodigoIbge": 5204953,
+    "Nome": "Campos Verdes"
+  },
+  {
+    "CodigoIbge": 5205000,
+    "Nome": "Carmo do Rio Verde"
+  },
+  {
+    "CodigoIbge": 5205059,
+    "Nome": "Castelândia"
+  },
+  {
+    "CodigoIbge": 5205109,
+    "Nome": "Catalão"
+  },
+  {
+    "CodigoIbge": 5205208,
+    "Nome": "Caturaí"
+  },
+  {
+    "CodigoIbge": 5205307,
+    "Nome": "Cavalcante"
+  },
+  {
+    "CodigoIbge": 5205406,
+    "Nome": "Ceres"
+  },
+  {
+    "CodigoIbge": 5205455,
+    "Nome": "Cezarina"
+  },
+  {
+    "CodigoIbge": 5205471,
+    "Nome": "Chapadão do Céu"
+  },
+  {
+    "CodigoIbge": 5205497,
+    "Nome": "Cidade Ocidental"
+  },
+  {
+    "CodigoIbge": 5205513,
+    "Nome": "Cocalzinho de Goiás"
+  },
+  {
+    "CodigoIbge": 5205521,
+    "Nome": "Colinas do Sul"
+  },
+  {
+    "CodigoIbge": 5205703,
+    "Nome": "Córrego do Ouro"
+  },
+  {
+    "CodigoIbge": 5205802,
+    "Nome": "Corumbá de Goiás"
+  },
+  {
+    "CodigoIbge": 5205901,
+    "Nome": "Corumbaíba"
+  },
+  {
+    "CodigoIbge": 5206206,
+    "Nome": "Cristalina"
+  },
+  {
+    "CodigoIbge": 5206305,
+    "Nome": "Cristianópolis"
+  },
+  {
+    "CodigoIbge": 5206404,
+    "Nome": "Crixás"
+  },
+  {
+    "CodigoIbge": 5206503,
+    "Nome": "Cromínia"
+  },
+  {
+    "CodigoIbge": 5206602,
+    "Nome": "Cumari"
+  },
+  {
+    "CodigoIbge": 5206701,
+    "Nome": "Damianópolis"
+  },
+  {
+    "CodigoIbge": 5206800,
+    "Nome": "Damolândia"
+  },
+  {
+    "CodigoIbge": 5206909,
+    "Nome": "Davinópolis"
+  },
+  {
+    "CodigoIbge": 5207105,
+    "Nome": "Diorama"
+  },
+  {
+    "CodigoIbge": 5208301,
+    "Nome": "Divinópolis de Goiás"
+  },
+  {
+    "CodigoIbge": 5207253,
+    "Nome": "Doverlândia"
+  },
+  {
+    "CodigoIbge": 5207352,
+    "Nome": "Edealina"
+  },
+  {
+    "CodigoIbge": 5207402,
+    "Nome": "Edéia"
+  },
+  {
+    "CodigoIbge": 5207501,
+    "Nome": "Estrela do Norte"
+  },
+  {
+    "CodigoIbge": 5207535,
+    "Nome": "Faina"
+  },
+  {
+    "CodigoIbge": 5207600,
+    "Nome": "Fazenda Nova"
+  },
+  {
+    "CodigoIbge": 5207808,
+    "Nome": "Firminópolis"
+  },
+  {
+    "CodigoIbge": 5207907,
+    "Nome": "Flores de Goiás"
+  },
+  {
+    "CodigoIbge": 5208004,
+    "Nome": "Formosa"
+  },
+  {
+    "CodigoIbge": 5208103,
+    "Nome": "Formoso"
+  },
+  {
+    "CodigoIbge": 5208152,
+    "Nome": "Gameleira de Goiás"
+  },
+  {
+    "CodigoIbge": 5208400,
+    "Nome": "Goianápolis"
+  },
+  {
+    "CodigoIbge": 5208509,
+    "Nome": "Goiandira"
+  },
+  {
+    "CodigoIbge": 5208608,
+    "Nome": "Goianésia"
+  },
+  {
+    "CodigoIbge": 5208707,
+    "Nome": "Goiânia"
+  },
+  {
+    "CodigoIbge": 5208806,
+    "Nome": "Goianira"
+  },
+  {
+    "CodigoIbge": 5208905,
+    "Nome": "Goiás"
+  },
+  {
+    "CodigoIbge": 5209101,
+    "Nome": "Goiatuba"
+  },
+  {
+    "CodigoIbge": 5209150,
+    "Nome": "Gouvelândia"
+  },
+  {
+    "CodigoIbge": 5209200,
+    "Nome": "Guapó"
+  },
+  {
+    "CodigoIbge": 5209291,
+    "Nome": "Guaraíta"
+  },
+  {
+    "CodigoIbge": 5209408,
+    "Nome": "Guarani de Goiás"
+  },
+  {
+    "CodigoIbge": 5209457,
+    "Nome": "Guarinos"
+  },
+  {
+    "CodigoIbge": 5209606,
+    "Nome": "Heitoraí"
+  },
+  {
+    "CodigoIbge": 5209705,
+    "Nome": "Hidrolândia"
+  },
+  {
+    "CodigoIbge": 5209804,
+    "Nome": "Hidrolina"
+  },
+  {
+    "CodigoIbge": 5209903,
+    "Nome": "Iaciara"
+  },
+  {
+    "CodigoIbge": 5209937,
+    "Nome": "Inaciolândia"
+  },
+  {
+    "CodigoIbge": 5209952,
+    "Nome": "Indiara"
+  },
+  {
+    "CodigoIbge": 5210000,
+    "Nome": "Inhumas"
+  },
+  {
+    "CodigoIbge": 5210109,
+    "Nome": "Ipameri"
+  },
+  {
+    "CodigoIbge": 5210158,
+    "Nome": "Ipiranga de Goiás"
+  },
+  {
+    "CodigoIbge": 5210208,
+    "Nome": "Iporá"
+  },
+  {
+    "CodigoIbge": 5210307,
+    "Nome": "Israelândia"
+  },
+  {
+    "CodigoIbge": 5210406,
+    "Nome": "Itaberaí"
+  },
+  {
+    "CodigoIbge": 5210562,
+    "Nome": "Itaguari"
+  },
+  {
+    "CodigoIbge": 5210604,
+    "Nome": "Itaguaru"
+  },
+  {
+    "CodigoIbge": 5210802,
+    "Nome": "Itajá"
+  },
+  {
+    "CodigoIbge": 5210901,
+    "Nome": "Itapaci"
+  },
+  {
+    "CodigoIbge": 5211008,
+    "Nome": "Itapirapuã"
+  },
+  {
+    "CodigoIbge": 5211206,
+    "Nome": "Itapuranga"
+  },
+  {
+    "CodigoIbge": 5211305,
+    "Nome": "Itarumã"
+  },
+  {
+    "CodigoIbge": 5211404,
+    "Nome": "Itauçu"
+  },
+  {
+    "CodigoIbge": 5211503,
+    "Nome": "Itumbiara"
+  },
+  {
+    "CodigoIbge": 5211602,
+    "Nome": "Ivolândia"
+  },
+  {
+    "CodigoIbge": 5211701,
+    "Nome": "Jandaia"
+  },
+  {
+    "CodigoIbge": 5211800,
+    "Nome": "Jaraguá"
+  },
+  {
+    "CodigoIbge": 5211909,
+    "Nome": "Jataí"
+  },
+  {
+    "CodigoIbge": 5212006,
+    "Nome": "Jaupaci"
+  },
+  {
+    "CodigoIbge": 5212055,
+    "Nome": "Jesúpolis"
+  },
+  {
+    "CodigoIbge": 5212105,
+    "Nome": "Joviânia"
+  },
+  {
+    "CodigoIbge": 5212204,
+    "Nome": "Jussara"
+  },
+  {
+    "CodigoIbge": 5212253,
+    "Nome": "Lagoa Santa"
+  },
+  {
+    "CodigoIbge": 5212303,
+    "Nome": "Leopoldo de Bulhões"
+  },
+  {
+    "CodigoIbge": 5212501,
+    "Nome": "Luziânia"
+  },
+  {
+    "CodigoIbge": 5212600,
+    "Nome": "Mairipotaba"
+  },
+  {
+    "CodigoIbge": 5212709,
+    "Nome": "Mambaí"
+  },
+  {
+    "CodigoIbge": 5212808,
+    "Nome": "Mara Rosa"
+  },
+  {
+    "CodigoIbge": 5212907,
+    "Nome": "Marzagão"
+  },
+  {
+    "CodigoIbge": 5212956,
+    "Nome": "Matrinchã"
+  },
+  {
+    "CodigoIbge": 5213004,
+    "Nome": "Maurilândia"
+  },
+  {
+    "CodigoIbge": 5213053,
+    "Nome": "Mimoso de Goiás"
+  },
+  {
+    "CodigoIbge": 5213087,
+    "Nome": "Minaçu"
+  },
+  {
+    "CodigoIbge": 5213103,
+    "Nome": "Mineiros"
+  },
+  {
+    "CodigoIbge": 5213400,
+    "Nome": "Moiporá"
+  },
+  {
+    "CodigoIbge": 5213509,
+    "Nome": "Monte Alegre de Goiás"
+  },
+  {
+    "CodigoIbge": 5213707,
+    "Nome": "Montes Claros de Goiás"
+  },
+  {
+    "CodigoIbge": 5213756,
+    "Nome": "Montividiu"
+  },
+  {
+    "CodigoIbge": 5213772,
+    "Nome": "Montividiu do Norte"
+  },
+  {
+    "CodigoIbge": 5213806,
+    "Nome": "Morrinhos"
+  },
+  {
+    "CodigoIbge": 5213855,
+    "Nome": "Morro Agudo de Goiás"
+  },
+  {
+    "CodigoIbge": 5213905,
+    "Nome": "Mossâmedes"
+  },
+  {
+    "CodigoIbge": 5214002,
+    "Nome": "Mozarlândia"
+  },
+  {
+    "CodigoIbge": 5214051,
+    "Nome": "Mundo Novo"
+  },
+  {
+    "CodigoIbge": 5214101,
+    "Nome": "Mutunópolis"
+  },
+  {
+    "CodigoIbge": 5214408,
+    "Nome": "Nazário"
+  },
+  {
+    "CodigoIbge": 5214507,
+    "Nome": "Nerópolis"
+  },
+  {
+    "CodigoIbge": 5214606,
+    "Nome": "Niquelândia"
+  },
+  {
+    "CodigoIbge": 5214705,
+    "Nome": "Nova América"
+  },
+  {
+    "CodigoIbge": 5214804,
+    "Nome": "Nova Aurora"
+  },
+  {
+    "CodigoIbge": 5214838,
+    "Nome": "Nova Crixás"
+  },
+  {
+    "CodigoIbge": 5214861,
+    "Nome": "Nova Glória"
+  },
+  {
+    "CodigoIbge": 5214879,
+    "Nome": "Nova Iguaçu de Goiás"
+  },
+  {
+    "CodigoIbge": 5214903,
+    "Nome": "Nova Roma"
+  },
+  {
+    "CodigoIbge": 5215009,
+    "Nome": "Nova Veneza"
+  },
+  {
+    "CodigoIbge": 5215207,
+    "Nome": "Novo Brasil"
+  },
+  {
+    "CodigoIbge": 5215231,
+    "Nome": "Novo Gama"
+  },
+  {
+    "CodigoIbge": 5215256,
+    "Nome": "Novo Planalto"
+  },
+  {
+    "CodigoIbge": 5215306,
+    "Nome": "Orizona"
+  },
+  {
+    "CodigoIbge": 5215405,
+    "Nome": "Ouro Verde de Goiás"
+  },
+  {
+    "CodigoIbge": 5215504,
+    "Nome": "Ouvidor"
+  },
+  {
+    "CodigoIbge": 5215603,
+    "Nome": "Padre Bernardo"
+  },
+  {
+    "CodigoIbge": 5215652,
+    "Nome": "Palestina de Goiás"
+  },
+  {
+    "CodigoIbge": 5215702,
+    "Nome": "Palmeiras de Goiás"
+  },
+  {
+    "CodigoIbge": 5215801,
+    "Nome": "Palmelo"
+  },
+  {
+    "CodigoIbge": 5215900,
+    "Nome": "Palminópolis"
+  },
+  {
+    "CodigoIbge": 5216007,
+    "Nome": "Panamá"
+  },
+  {
+    "CodigoIbge": 5216304,
+    "Nome": "Paranaiguara"
+  },
+  {
+    "CodigoIbge": 5216403,
+    "Nome": "Paraúna"
+  },
+  {
+    "CodigoIbge": 5216452,
+    "Nome": "Perolândia"
+  },
+  {
+    "CodigoIbge": 5216809,
+    "Nome": "Petrolina de Goiás"
+  },
+  {
+    "CodigoIbge": 5216908,
+    "Nome": "Pilar de Goiás"
+  },
+  {
+    "CodigoIbge": 5217104,
+    "Nome": "Piracanjuba"
+  },
+  {
+    "CodigoIbge": 5217203,
+    "Nome": "Piranhas"
+  },
+  {
+    "CodigoIbge": 5217302,
+    "Nome": "Pirenópolis"
+  },
+  {
+    "CodigoIbge": 5217401,
+    "Nome": "Pires do Rio"
+  },
+  {
+    "CodigoIbge": 5217609,
+    "Nome": "Planaltina"
+  },
+  {
+    "CodigoIbge": 5217708,
+    "Nome": "Pontalina"
+  },
+  {
+    "CodigoIbge": 5218003,
+    "Nome": "Porangatu"
+  },
+  {
+    "CodigoIbge": 5218052,
+    "Nome": "Porteirão"
+  },
+  {
+    "CodigoIbge": 5218102,
+    "Nome": "Portelândia"
+  },
+  {
+    "CodigoIbge": 5218300,
+    "Nome": "Posse"
+  },
+  {
+    "CodigoIbge": 5218391,
+    "Nome": "Professor Jamil"
+  },
+  {
+    "CodigoIbge": 5218508,
+    "Nome": "Quirinópolis"
+  },
+  {
+    "CodigoIbge": 5218607,
+    "Nome": "Rialma"
+  },
+  {
+    "CodigoIbge": 5218706,
+    "Nome": "Rianápolis"
+  },
+  {
+    "CodigoIbge": 5218789,
+    "Nome": "Rio Quente"
+  },
+  {
+    "CodigoIbge": 5218805,
+    "Nome": "Rio Verde"
+  },
+  {
+    "CodigoIbge": 5218904,
+    "Nome": "Rubiataba"
+  },
+  {
+    "CodigoIbge": 5219001,
+    "Nome": "Sanclerlândia"
+  },
+  {
+    "CodigoIbge": 5219100,
+    "Nome": "Santa Bárbara de Goiás"
+  },
+  {
+    "CodigoIbge": 5219209,
+    "Nome": "Santa Cruz de Goiás"
+  },
+  {
+    "CodigoIbge": 5219258,
+    "Nome": "Santa Fé de Goiás"
+  },
+  {
+    "CodigoIbge": 5219308,
+    "Nome": "Santa Helena de Goiás"
+  },
+  {
+    "CodigoIbge": 5219357,
+    "Nome": "Santa Isabel"
+  },
+  {
+    "CodigoIbge": 5219407,
+    "Nome": "Santa Rita do Araguaia"
+  },
+  {
+    "CodigoIbge": 5219456,
+    "Nome": "Santa Rita do Novo Destino"
+  },
+  {
+    "CodigoIbge": 5219506,
+    "Nome": "Santa Rosa de Goiás"
+  },
+  {
+    "CodigoIbge": 5219605,
+    "Nome": "Santa Tereza de Goiás"
+  },
+  {
+    "CodigoIbge": 5219704,
+    "Nome": "Santa Terezinha de Goiás"
+  },
+  {
+    "CodigoIbge": 5219712,
+    "Nome": "Santo Antônio da Barra"
+  },
+  {
+    "CodigoIbge": 5219738,
+    "Nome": "Santo Antônio de Goiás"
+  },
+  {
+    "CodigoIbge": 5219753,
+    "Nome": "Santo Antônio do Descoberto"
+  },
+  {
+    "CodigoIbge": 5219803,
+    "Nome": "São Domingos"
+  },
+  {
+    "CodigoIbge": 5219902,
+    "Nome": "São Francisco de Goiás"
+  },
+  {
+    "CodigoIbge": 5220009,
+    "Nome": "São João d\\"
+  },
+  {
+    "CodigoIbge": 5220058,
+    "Nome": "São João da Paraúna"
+  },
+  {
+    "CodigoIbge": 5220108,
+    "Nome": "São Luís de Montes Belos"
+  },
+  {
+    "CodigoIbge": 5220157,
+    "Nome": "São Luiz do Norte"
+  },
+  {
+    "CodigoIbge": 5220207,
+    "Nome": "São Miguel do Araguaia"
+  },
+  {
+    "CodigoIbge": 5220264,
+    "Nome": "São Miguel do Passa Quatro"
+  },
+  {
+    "CodigoIbge": 5220280,
+    "Nome": "São Patrício"
+  },
+  {
+    "CodigoIbge": 5220405,
+    "Nome": "São Simão"
+  },
+  {
+    "CodigoIbge": 5220454,
+    "Nome": "Senador Canedo"
+  },
+  {
+    "CodigoIbge": 5220504,
+    "Nome": "Serranópolis"
+  },
+  {
+    "CodigoIbge": 5220603,
+    "Nome": "Silvânia"
+  },
+  {
+    "CodigoIbge": 5220686,
+    "Nome": "Simolândia"
+  },
+  {
+    "CodigoIbge": 5220702,
+    "Nome": "Sítio d\\"
+  },
+  {
+    "CodigoIbge": 5221007,
+    "Nome": "Taquaral de Goiás"
+  },
+  {
+    "CodigoIbge": 5221080,
+    "Nome": "Teresina de Goiás"
+  },
+  {
+    "CodigoIbge": 5221197,
+    "Nome": "Terezópolis de Goiás"
+  },
+  {
+    "CodigoIbge": 5221304,
+    "Nome": "Três Ranchos"
+  },
+  {
+    "CodigoIbge": 5221403,
+    "Nome": "Trindade"
+  },
+  {
+    "CodigoIbge": 5221452,
+    "Nome": "Trombas"
+  },
+  {
+    "CodigoIbge": 5221502,
+    "Nome": "Turvânia"
+  },
+  {
+    "CodigoIbge": 5221551,
+    "Nome": "Turvelândia"
+  },
+  {
+    "CodigoIbge": 5221577,
+    "Nome": "Uirapuru"
+  },
+  {
+    "CodigoIbge": 5221601,
+    "Nome": "Uruaçu"
+  },
+  {
+    "CodigoIbge": 5221700,
+    "Nome": "Uruana"
+  },
+  {
+    "CodigoIbge": 5221809,
+    "Nome": "Urutaí"
+  },
+  {
+    "CodigoIbge": 5221858,
+    "Nome": "Valparaíso de Goiás"
+  },
+  {
+    "CodigoIbge": 5221908,
+    "Nome": "Varjão"
+  },
+  {
+    "CodigoIbge": 5222005,
+    "Nome": "Vianópolis"
+  },
+  {
+    "CodigoIbge": 5222054,
+    "Nome": "Vicentinópolis"
+  },
+  {
+    "CodigoIbge": 5222203,
+    "Nome": "Vila Boa"
+  },
+  {
+    "CodigoIbge": 5222302,
+    "Nome": "Vila Propício"
+  }
+]
