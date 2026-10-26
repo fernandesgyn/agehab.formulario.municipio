@@ -1,0 +1,21 @@
+name: ASP.NET Core 8 CI
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore tests/PortalSmokeTests/PortalSmokeTests.csproj
+      - name: Build
+        run: dotnet build tests/PortalSmokeTests/PortalSmokeTests.csproj --configuration Release --no-restore
+      - name: Run smoke tests
+        run: dotnet run --project tests/PortalSmokeTests/PortalSmokeTests.csproj --configuration Release --no-build
+      - name: Publish IIS
+        run: dotnet publish src/MunicipioPortal/MunicipioPortal.csproj --configuration Release --no-restore --output publish/painel

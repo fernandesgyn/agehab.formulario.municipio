@@ -23,4 +23,4 @@ public sealed record RespostaMunicipal(
         .Sum(c => Quantidades.GetValueOrDefault(c.Chave));
 }
 
-public sealed class AdminIdentity;
+public sealed class AdminIdentity { }
