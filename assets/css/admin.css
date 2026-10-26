@@ -1,0 +1,275 @@
+:root {
+  --portal-primary: #00862f;
+  --portal-primary-hover: #006b25;
+  --portal-primary-soft: #e7f5ec;
+  --portal-danger: #d83a36;
+  --portal-danger-hover: #b92f2b;
+  --portal-action-gap: .5rem;
+  --bs-primary: #00862f;
+  --bs-primary-rgb: 0, 134, 47;
+  --bs-link-color: #00862f;
+  --bs-link-hover-color: #006b25;
+  --bs-danger: #d83a36;
+  --bs-danger-rgb: 216, 58, 54;
+}
+
+a { color: var(--portal-primary); }
+a:hover, a:focus { color: var(--portal-primary-hover); }
+.text-primary, .link-primary { color: var(--portal-primary) !important; }
+.link-primary:hover, .link-primary:focus { color: var(--portal-primary-hover) !important; }
+.bg-primary, .text-bg-primary { background-color: var(--portal-primary) !important; color: #fff !important; }
+.border-primary { border-color: var(--portal-primary) !important; }
+
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--portal-primary);
+  --bs-btn-border-color: var(--portal-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--portal-primary-hover);
+  --bs-btn-hover-border-color: var(--portal-primary-hover);
+  --bs-btn-focus-shadow-rgb: 0, 134, 47;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--portal-primary-hover);
+  --bs-btn-active-border-color: var(--portal-primary-hover);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--portal-primary);
+  --bs-btn-disabled-border-color: var(--portal-primary);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--portal-primary);
+  --bs-btn-border-color: var(--portal-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--portal-primary);
+  --bs-btn-hover-border-color: var(--portal-primary);
+  --bs-btn-focus-shadow-rgb: 0, 134, 47;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--portal-primary-hover);
+  --bs-btn-active-border-color: var(--portal-primary-hover);
+  --bs-btn-disabled-color: var(--portal-primary);
+}
+
+.btn-danger { --bs-btn-bg: var(--portal-danger); --bs-btn-border-color: var(--portal-danger); --bs-btn-hover-bg: var(--portal-danger-hover); --bs-btn-hover-border-color: var(--portal-danger-hover); }
+.btn-outline-danger { --bs-btn-color: var(--portal-danger); --bs-btn-border-color: var(--portal-danger); --bs-btn-hover-bg: var(--portal-danger); --bs-btn-hover-border-color: var(--portal-danger); }
+.form-control:focus, .form-select:focus, .form-check-input:focus { border-color: var(--portal-primary); box-shadow: 0 0 0 .25rem rgba(0, 134, 47, .18); }
+.form-check-input:checked { background-color: var(--portal-primary); border-color: var(--portal-primary); }
+.dropdown-item.active, .dropdown-item:active, .list-group-item.active, .nav-pills .nav-link.active, .nav-pills .show > .nav-link, .page-item.active .page-link { background-color: var(--portal-primary) !important; border-color: var(--portal-primary) !important; color: #fff !important; }
+.page-link { color: var(--portal-primary); }
+.page-link:hover, .page-link:focus { color: var(--portal-primary-hover); }
+.progress-bar { background-color: var(--portal-primary); }
+
+.app-sidebar[data-bs-theme="light"] {
+  --lte-sidebar-menu-active-bg: var(--portal-primary-soft);
+  --lte-sidebar-menu-active-color: var(--portal-primary-hover);
+  --lte-sidebar-hover-bg: var(--portal-primary-soft);
+  --lte-sidebar-hover-color: var(--portal-primary-hover);
+}
+
+.app-sidebar .brand-image, .navbar-brand .fa-scale-balanced, .login-logo .fa-scale-balanced { color: var(--portal-primary) !important; }
+.brand-image.fa-solid { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; }
+.card-primary.card-outline, .card.card-outline.card-primary { border-top-color: var(--portal-primary) !important; }
+
+/* O rodapé deve exibir apenas conteúdo institucional, sem identificação técnica do framework. */
+.app-footer .float-end { display: none !important; }
+
+/* Padrão visual único para botões de ação: ícone + texto + contorno semântico. */
+.portal-action-btn {
+  --portal-action-color: #5f6873;
+  --portal-action-hover: #4f5862;
+  --portal-action-rgb: 95, 104, 115;
+  --bs-btn-color: var(--portal-action-color);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--portal-action-color);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--portal-action-hover);
+  --bs-btn-hover-border-color: var(--portal-action-hover);
+  --bs-btn-focus-shadow-rgb: var(--portal-action-rgb);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--portal-action-hover);
+  --bs-btn-active-border-color: var(--portal-action-hover);
+  --bs-btn-disabled-color: var(--portal-action-color);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: var(--portal-action-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .38rem;
+  border-width: 1px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: none;
+}
+
+.portal-action-btn > i,
+.portal-action-btn > svg {
+  color: inherit !important;
+  flex: 0 0 auto;
+}
+
+.portal-action-open,
+.portal-action-create,
+.portal-action-save,
+.portal-action-activate,
+.portal-action-download,
+.portal-action-share {
+  --portal-action-color: #00862f;
+  --portal-action-hover: #006b25;
+  --portal-action-rgb: 0, 134, 47;
+}
+
+.portal-action-edit {
+  --portal-action-color: #0d6efd;
+  --portal-action-hover: #0a58ca;
+  --portal-action-rgb: 13, 110, 253;
+}
+
+.portal-action-delete {
+  --portal-action-color: var(--portal-danger);
+  --portal-action-hover: var(--portal-danger-hover);
+  --portal-action-rgb: 216, 58, 54;
+}
+
+.portal-action-history {
+  --portal-action-color: #6f42c1;
+  --portal-action-hover: #59359a;
+  --portal-action-rgb: 111, 66, 193;
+}
+
+.portal-action-back,
+.portal-action-reset,
+.portal-action-neutral {
+  --portal-action-color: #6c757d;
+  --portal-action-hover: #565e64;
+  --portal-action-rgb: 108, 117, 125;
+}
+
+.portal-action-search,
+.portal-action-upload {
+  --portal-action-color: #0b7285;
+  --portal-action-hover: #095c6b;
+  --portal-action-rgb: 11, 114, 133;
+}
+
+.portal-action-warning {
+  --portal-action-color: #b77900;
+  --portal-action-hover: #925f00;
+  --portal-action-rgb: 183, 121, 0;
+}
+
+.portal-action-btn:disabled,
+.portal-action-btn.disabled {
+  opacity: .52;
+}
+
+/* Todo conjunto de ações lado a lado usa exatamente o mesmo espaçamento. */
+.portal-action-group {
+  display: inline-flex !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--portal-action-gap) !important;
+  vertical-align: middle;
+}
+
+.portal-action-group > .portal-action-item,
+.portal-action-group > .btn,
+.portal-action-group > form {
+  margin: 0 !important;
+}
+
+.portal-action-group > form {
+  display: inline-flex;
+}
+
+/* Ações da página ficam acima dos cards: Voltar à esquerda e ações contextuais à direita. */
+.portal-page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--portal-action-gap);
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.portal-page-actions-left,
+.portal-page-actions-right {
+  min-height: 31px;
+}
+
+.portal-page-actions-right {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+/* Ações de tabela ficam em uma única linha, sem alterar o display da célula. */
+.portal-actions-cell {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.portal-table-actions {
+  display: flex !important;
+  width: max-content;
+  max-width: none;
+  margin-left: auto;
+  flex-wrap: nowrap !important;
+}
+
+/* Neutraliza a aparência de grupo colado caso uma view antiga ainda use btn-group. */
+.portal-action-group > .btn,
+.portal-action-group > form > .btn {
+  border-radius: var(--bs-border-radius-sm) !important;
+}
+
+/* Em telas desktop, os controles de pesquisa das tabelas permanecem em uma única linha. */
+@media (min-width: 992px) {
+  [data-admin-table] > .card-body.border-bottom > .row {
+    flex-wrap: nowrap;
+  }
+
+  [data-admin-table] > .card-body.border-bottom > .row > [class*="col-lg-4"] {
+    flex: 1.45 1 0;
+    width: auto;
+    min-width: 0;
+  }
+
+  [data-admin-table] > .card-body.border-bottom > .row > [class*="col-lg-2"] {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+
+  [data-admin-table] > .card-body.border-bottom > .row > .col-md-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .portal-page-actions-left,
+  .portal-page-actions-right {
+    width: 100%;
+  }
+
+  .portal-page-actions-right {
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+}
+
+.accountability-dropzone {
+  cursor: pointer;
+  border-style: dashed !important;
+  background: var(--bs-body-bg);
+  transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+
+.accountability-dropzone:hover,
+.accountability-dropzone:focus,
+.accountability-dropzone.is-dragging {
+  border-color: var(--portal-primary) !important;
+  background: var(--portal-primary-soft);
+  box-shadow: 0 0 0 .2rem rgba(var(--bs-primary-rgb), .08);
+  outline: 0;
+}
+
