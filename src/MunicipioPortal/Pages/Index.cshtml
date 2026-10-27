@@ -74,9 +74,9 @@
   }
 
   <section class="card mb-4">
-   <div class="card-header"><h5 class="card-title mb-0">6. Programas habitacionais do município</h5></div>
+   <div class="card-header"><h5 class="card-title mb-0">6. O Município possui algum Programa Habitacional próprio (entende-se como próprio programas com recursos exclusivos do município)</h5></div>
    <div class="card-body">
-    <p class="mb-3">O município possui algum programa habitacional próprio, financiado exclusivamente com recursos municipais?</p>
+    <p class="mb-3">Escolha uma opção.</p>
     @foreach (var programa in QuestionarioDefinition.Programas)
     {
      <div class="form-check mb-3">
@@ -86,7 +86,7 @@
     }
     <span asp-validation-for="Dados.Programa" class="text-danger small"></span>
     <div id="programa-detalhes-group" class="mt-3 p-3 rounded border bg-body-tertiary" hidden>
-     <label asp-for="Dados.Detalhes" class="form-label fw-semibold">6.1. Nome do programa próprio e benefício concedido <span class="text-danger">*</span></label>
+     <label asp-for="Dados.Detalhes" class="form-label fw-semibold">6.1. Qual nome do Programa? Qual benefício o programa concede? (lote, casa, ajuda de custo, etc.) <span class="text-danger">*</span></label>
      <textarea asp-for="Dados.Detalhes" class="form-control" rows="4" maxlength="2000"
         placeholder="Ex.: nome do programa; concessão de lotes, casas ou ajuda de custo."></textarea>
      <span asp-validation-for="Dados.Detalhes" class="text-danger small"></span>
