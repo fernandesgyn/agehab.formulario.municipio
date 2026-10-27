@@ -16,10 +16,10 @@ public static class QuestionarioDefinition
 
     private static readonly (int Numero, string Titulo)[] AreasFonte =
     [
-        (2, "Cadastro e seleção das famílias"),
-        (3, "Visitas sociais e elaboração de relatório social"),
-        (4, "Trabalho Social (TS) — fase pré-ocupacional"),
-        (5, "Trabalho Social (TS) — fase pós-ocupacional")
+        (2, "Quantidade de Profissionais que atuam no cadastro de seleção das famílias"),
+        (3, "Quantidade de Profissionais que atual nas Visitas Sociais /Elaboração de Relatório Social"),
+        (4, "Quantidade de Profissionais que atuam no Trabalho Social (TS) - Fase Pré- Ocupacional"),
+        (5, "Quantidade de Profissionais que atuam no Trabalho Social (TS) - Fase Pós-Ocupacional")
     ];
 
     public static readonly IReadOnlyList<Area> Areas = AreasFonte
@@ -34,7 +34,7 @@ public static class QuestionarioDefinition
 
     public static readonly IReadOnlyList<OpcaoPrograma> Programas =
     [
-        new("PROPRIO", "Sim, possui programa habitacional próprio com recursos exclusivos do município"),
+        new("PROPRIO", "Sim, possui programa habitacional próprio"),
         new("ESTADUAL", "Não, atua somente com o Governo de Goiás no Programa Pra Ter Onde Morar"),
         new("FEDERAL", "Não, atua somente com o Governo Federal em empreendimentos do Minha Casa, Minha Vida"),
         new("AMBOS", "Não, atua com os programas Pra Ter Onde Morar e Minha Casa, Minha Vida")

@@ -13,6 +13,16 @@ Check(QuestionarioDefinition.Campos.Count == 16, "16 fields");
 Check(QuestionarioDefinition.Campos.DistinctBy(x => x.Chave).Count() == 16, "unique fields");
 Check(QuestionarioDefinition.Campos.Any(x => x.Coluna == "Q2_EFETIVOS"), "SQL name");
 Check(QuestionarioDefinition.Programas.Count == 4, "4 options");
+Check(QuestionarioDefinition.Areas[0].Titulo == "Quantidade de Profissionais que atuam no cadastro de seleção das famílias", "question 2 copy");
+Check(QuestionarioDefinition.Areas[1].Titulo == "Quantidade de Profissionais que atual nas Visitas Sociais /Elaboração de Relatório Social", "question 3 copy");
+Check(QuestionarioDefinition.Areas[2].Titulo == "Quantidade de Profissionais que atuam no Trabalho Social (TS) - Fase Pré- Ocupacional", "question 4 copy");
+Check(QuestionarioDefinition.Areas[3].Titulo == "Quantidade de Profissionais que atuam no Trabalho Social (TS) - Fase Pós-Ocupacional", "question 5 copy");
+Check(QuestionarioDefinition.Programas.Single(p => p.Codigo == "PROPRIO").Titulo == "Sim, possui programa habitacional próprio", "question 6 program option");
+var formContent = File.ReadAllText(Path.Combine("src/MunicipioPortal", "Pages", "Index.cshtml"));
+Check(formContent.Contains("6. O Município possui algum Programa Habitacional próprio (entende-se como próprio programas com recursos exclusivos do município)"), "question 6 heading");
+Check(formContent.Contains("Escolha uma opção."), "question 6 instruction");
+Check(formContent.Contains("Qual nome do Programa? Qual benefício o programa concede? (lote, casa, ajuda de custo, etc.)"), "question 6 details label");
+
 Check(QuestionarioDefinition.ProgramaValido("PROPRIO"), "valid option");
 Check(!QuestionarioDefinition.ProgramaValido("INVALIDO"), "reject invalid option");
 
