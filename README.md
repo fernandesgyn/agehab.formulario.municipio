@@ -1,113 +1,94 @@
-# Levantamento habitacional dos municípios goianos — AGEHAB
+# Formulário AGEHAB — Municípios Goianos
 
-Sistema **ASP.NET Core 8 (Razor Pages)** com identidade visual AGEHAB/AdminLTE e banco de dados **SQL Server**, preparado para IIS em https://painel.agehab.go.gov.br/.
+Sistema **ASP.NET Core 8 (Razor Pages)**, AdminLTE e **Microsoft SQL Server**. Endereço previsto: https://painel.agehab.go.gov.br/. O formulário tem 8 questões e lista os 246 municípios de Goiás. Não existe área administrativa; consultas são feitas no SSMS.
 
-**A aplicação não possui área administrativa.** As respostas são consultadas no SSMS utilizando os scripts de consulta do repositório.
+## Banco de dados: esquema definitivo e sem migrations
 
-## Questionário (versão 2)
+O projeto possui **apenas um script de criação**, database/schema.sql. O arquivo contém tudo que uma instalação nova necessita:
 
-| Questão | Dados | Tipo |
-| --- | --- | --- |
-| 1 | Nome do município (246 municípios goianos) | Lista suspensa, código IBGE |
-| 2 | Profissionais no cadastro/seleção de famílias (2.1–2.4) e quantos são assistentes sociais com CRESS ativo (2.5) | 5 inteiros |
-| 3 | Assistentes sociais em visitas/relatórios por vínculo (3.1–3.4) e quantos atuaram exclusivamente na seleção (3.5) | 5 inteiros |
-| 4 | Profissionais no Trabalho Social pós-ocupacional por vínculo (4.1–4.4) | 4 inteiros |
-| 5 | Coordenação por assistentes sociais com CRESS, profissionais de áreas afins e administrativos (5.1–5.3) | 3 inteiros |
-| 6 | Estrutura organizacional de Habitação e Trabalho Social | Lista suspensa com 9 opções; descrição se Outra estrutura |
-| 7 | Programa Habitacional próprio ou atuação com Estado/União | 4 alternativas; detalhamento obrigatório se programa próprio |
-| 8 | Educação, saúde, lazer, CRAS/CREAS, comércio, reciclagem, limpeza, asfalto, iluminação, posto policial | 13 respostas Sim/Não |
+- CREATE DATABASE AGEHAB_FORMULARIO_MUNICIPIOS.
+- CREATE TABLE dbo.Municipios com os 246 municípios e códigos IBGE.
+- CREATE TABLE dbo.RespostasMunicipais com **todas as colunas atuais** das questões 1 a 8, restrições de validade e índice por data de envio.
 
-**Validação:** os 17 campos de quantidades são obrigatórios, inteiros de 0 a 100.000 (zero significa ausência). O item 2.5 não pode exceder a soma de 2.1–2.4, nem o item 3.5 a soma de 3.1–3.4. Os 13 itens da questão 8 são obrigatórios, sem resposta padrão; o município seleciona Sim ou Não em cada item. Os detalhes de programa próprio e de Outra estrutura são exigidos apenas quando pertinentes.
+**Não existem migrations, tabelas V2, verificações condicionais de criação ou atualizações automáticas de esquema.** O aplicativo jamais executa CREATE/ALTER/DROP, nem na inicialização nem durante o envio. O script deve ser executado **uma única vez em uma instalação limpa** (SSMS/sqlcmd). Não há a necessidade de executar instruções adicionais de criação de tabelas ou migrations após ele.
 
-Todos os dados são validados novamente no servidor. A gravação é parametrizada no SQL Server e fornece um protocolo. Uma única resposta por município **na versão 2**.
+### Atenção para instalações já existentes
 
-## Alterações no banco: importante antes de publicar
+**Não execute database/schema.sql sobre uma instalação que já tenha o banco AGEHAB_FORMULARIO_MUNICIPIOS.** O script contém CREATE DATABASE/CREATE TABLE normais e falhará em objetos existentes. **Não apague nem recrie um banco com respostas reais sem antes fazer backup e aprovar a estratégia de preservação de dados.** Esta versão substitui a nomenclatura dbo.RespostasMunicipaisV2 por dbo.RespostasMunicipais e usa um esquema diferente do formulário antigo. Portanto, os bancos já provisionados anteriormente **não são compatíveis automaticamente** com o novo código.
 
-A estrutura foi modificada **substancialmente** em relação às perguntas anteriores. Para impedir perda de dados, a versão nova grava em uma tabela separada:
+Para uma nova implantação sem conversão, use um ambiente SQL Server sem essa base ou uma instância nova, execute schema.sql e só então aponte ConnectionStrings__Municipios para ela. Se a infraestrutura precisar **conservar respostas históricas no mesmo banco**, será necessária uma decisão administrativa de conversão/arquivamento **manual e específica**, fora deste projeto (nenhuma migração é fornecida e nenhum dado é alterado automaticamente). **Atualizar apenas o executável no IIS sem adequar o banco causará erro de gravação.**
 
-- **Nova:** dbo.RespostasMunicipaisV2 — contém integralmente questões 1 a 8 novas.
-- **Antiga:** dbo.RespostasMunicipais — mantém os registros do questionário anterior e não é modificada pela migração.
-- Compartilhada: dbo.Municipios — contém os 246 municípios do Estado de Goiás.
+### Configuração de conexão
 
-### Servidor SQL Server já utilizado pelo projeto
+Defina no processo ASP.NET Core/IIS a variável de ambiente ConnectionStrings__Municipios (não publique senhas no GitHub). Exemplos:
 
-**Execute uma vez** database/migracao-v2.sql no SSMS, conectado ao SQL Server correto. O script usa o banco AGEHAB_FORMULARIO_MUNICIPIOS e cria somente dbo.RespostasMunicipaisV2 se ainda não existir. **Não execute database/schema.sql em uma instância que já possua o banco.**
-
-### Instalação do zero
-
-Se ainda não existe esse banco, execute database/schema.sql. O script cria a base, os 246 municípios e a nova dbo.RespostasMunicipaisV2. Não cria a tabela de respostas antiga.
-
-### Conceder permissão para a aplicação
-
-A identidade utilizada pelo IIS precisa ter INSERT em dbo.RespostasMunicipaisV2, além de SELECT no catálogo de municípios, de acordo com a configuração de segurança local. Exemplo ilustrativo no SSMS, substituindo o usuário pelo nome real:
-
-    USE AGEHAB_FORMULARIO_MUNICIPIOS;
-    GRANT INSERT ON dbo.RespostasMunicipaisV2 TO [USUARIO_APLICACAO];
-    GRANT SELECT ON dbo.Municipios TO [USUARIO_APLICACAO];
-
-**ATENÇÃO:** os comandos GRANT apenas funcionam com usuário previamente existente no banco e precisam ser executados pelo DBA. Não publique credenciais no repositório.
-
-## Configuração SQL Server
-
-Configure a variável de ambiente ConnectionStrings__Municipios no processo ASP.NET Core (IIS). O appsettings.json permanece sem credenciais.
-
-Exemplo para login SQL com TLS válido:
+Autenticação SQL com certificado confiável:
 
     Server=SERVIDOR_SQL,1433;Database=AGEHAB_FORMULARIO_MUNICIPIOS;User Id=USUARIO;Password=SENHA;Encrypt=True;TrustServerCertificate=False;
 
-Exemplo para conta de serviço Windows com autenticação integrada:
+Autenticação integrada com conta Windows autorizada no SQL Server:
 
     Server=SERVIDOR_SQL,1433;Database=AGEHAB_FORMULARIO_MUNICIPIOS;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;
 
-A conta Windows do Application Pool precisa ter permissão no SQL Server se usar Integrated Security. Em produção, use certificado SQL confiável, segredos em configuração protegida e não exponha a porta SQL publicamente.
+A conta da aplicação precisa de permissão INSERT em dbo.RespostasMunicipais e SELECT em dbo.Municipios. O app não altera tabelas. Conceda as permissões por procedimento próprio do DBA.
 
-### Diagnóstico da versão 2, sem gravação
+## Questões implementadas
 
-Na raiz do projeto e com ConnectionStrings__Municipios configurada no ambiente:
+| Questão | Conteúdo |
+| --- | --- |
+| 1 | Nome do Município (246 opções) |
+| 2 | Profissionais no cadastro/seleção por vínculo (2.1–2.4) e assistentes sociais com registro no CRESS (2.5) |
+| 3 | Assistentes sociais nas visitas/relatórios por vínculo (3.1–3.4) e quantos atuaram exclusivamente na seleção (3.5) |
+| 4 | Profissionais no Trabalho Social pós-ocupacional, por vínculo (4.1–4.4) |
+| 5 | Assistentes sociais coordenadores com CRESS, áreas afins e administrativos (5.1–5.3) |
+| 6 | Estrutura organizacional (9 opções; outra estrutura requer detalhamento) |
+| 7 | Programa habitacional próprio ou ações com Estado/União (4 opções; programa próprio requer detalhamento) |
+| 8 | Acesso a serviços e infraestrutura: 13 itens com resposta obrigatória Sim/Não |
 
-    dotnet run --project src/MunicipioPortal/MunicipioPortal.csproj -- --verificar-sqlserver
+Os 17 campos numéricos são obrigatórios, entre 0 e 100.000, inclusive zero quando não existirem profissionais. O total 2.5 não pode superar a soma 2.1–2.4 e o total 3.5 não pode superar a soma 3.1–3.4. A gravação é parametrizada, protege CSRF e gera protocolo somente após INSERT confirmado. Uma resposta por código IBGE, controlada no SQL Server.
 
-O comando verifica a nova tabela, todas as colunas exigidas, os 246 municípios e a permissão INSERT. **Não envia nenhum formulário nem altera dados.** Um BD-ESTRUTURA indica que provavelmente ainda falta executar database/migracao-v2.sql.
+## Como executar no Windows
 
-## Execução local
+Requer o SDK **.NET 8** e acesso à conexão SQL Server configurada. Na raiz do repositório:
 
     dotnet restore src/MunicipioPortal/MunicipioPortal.csproj
     dotnet run --project src/MunicipioPortal/MunicipioPortal.csproj --urls http://localhost:5080
 
-Página: http://localhost:5080/.
+Abra http://localhost:5080/.
 
-Testes de validação e estrutura sem banco externo:
+Para testar as definições do questionário e a estrutura do script sem SQL Server:
 
     dotnet run --project tests/PortalSmokeTests/PortalSmokeTests.csproj
 
-## Publicação no IIS (painel.agehab.go.gov.br)
+Para verificar uma conexão SQL Server já configurada, sem gravar:
 
-1. Execute database/migracao-v2.sql no SQL Server existente **antes** de substituir a versão publicada no IIS.
-2. Conceda INSERT à identidade SQL do portal em dbo.RespostasMunicipaisV2.
-3. Instale o ASP.NET Core 8 Hosting Bundle no servidor Windows com IIS.
-4. Gere o pacote: dotnet publish src/MunicipioPortal/MunicipioPortal.csproj -c Release -o C:\Publicacao\painel-agehab
-5. Publique o pacote no site do IIS, usando pool .NET CLR Version: No Managed Code.
-6. Configure certificado HTTPS, domínio painel.agehab.go.gov.br e ConnectionStrings__Municipios.
-7. Execute o diagnóstico e realize uma submissão autorizada de homologação.
+    dotnet run --project src/MunicipioPortal/MunicipioPortal.csproj -- --verificar-sqlserver
 
-O pipeline GitHub Actions também gera um artefato IIS com web.config e os assets estáticos. A implantação real, certificado e DNS são administrados pela infraestrutura.
+Esse comando apenas consulta a conexão, o catálogo, as colunas da tabela dbo.RespostasMunicipais e as permissões, mas **não cria nem altera objetos**.
 
-## Consultas SQL
+## Publicar no IIS
 
-**Consulta completa tabulada, 246 linhas (incluindo pendentes):** execute database/consultas-v2.sql no SSMS.
+1. **Antes de publicar**, configure o banco novo executando database/schema.sql no SSMS (somente instalação limpa) e as permissões da identidade do portal.
+2. Instale ASP.NET Core 8 Hosting Bundle no servidor IIS, se necessário.
+3. Gere o pacote: dotnet publish src/MunicipioPortal/MunicipioPortal.csproj -c Release -o C:\Publicacao\painel-agehab
+4. Crie/atualize o site IIS com pool .NET CLR Version: No Managed Code e diretório apontando para a publicação.
+5. Configure DNS e HTTPS para painel.agehab.go.gov.br, certificado válido e ConnectionStrings__Municipios.
+6. Confirme que o banco apontado pela conexão é o **novo esquema definitivo**. Execute o diagnóstico e teste uma submissão autorizada.
 
-Consulta básica de todas as respostas da versão nova:
+O pipeline GitHub Actions compila, testa o esquema em nível de texto e gera pacote IIS, mas não testa a conexão com o SQL Server da AGEHAB.
+
+## Consultar todos os municípios e respostas tabuladas
+
+Execute database/consultas.sql no SSMS. A consulta usa dbo.Municipios LEFT JOIN dbo.RespostasMunicipais para incluir os 246 municípios, mesmo os pendentes, e devolve respostas em colunas.
+
+Uma consulta rápida apenas aos respondentes:
 
     USE AGEHAB_FORMULARIO_MUNICIPIOS;
     SELECT M.Nome AS Municipio, R.*
-      FROM dbo.RespostasMunicipaisV2 AS R
-      JOIN dbo.Municipios AS M ON M.CodigoIBGE = R.CodigoIBGE
-     ORDER BY M.Nome;
+    FROM dbo.RespostasMunicipais AS R
+    JOIN dbo.Municipios AS M ON M.CodigoIBGE = R.CodigoIBGE
+    ORDER BY M.Nome;
 
-As respostas da versão anterior continuam na tabela dbo.RespostasMunicipais. **Não misture os quantitativos antigos e novos:** a questão 4 e a questão 5 tiveram seus significados alterados.
+## Segurança
 
-## Privacidade e limites
-
-O formulário não exige identificação individual de representantes municipais. A restrição de uma resposta por município não garante a identidade de quem respondeu. Antes de uso oficial público, considere distribuição autenticada ou convites individualizados.
-
-A compilação e os testes automatizados não substituem um teste de integração com o SQL Server real e a configuração de IIS da AGEHAB.
+O formulário não autentica individualmente os representantes municipais. A unicidade por município não garante autoria da resposta. Para utilização oficial aberta, considere validar o responsável ou distribuir convites individuais. Nenhum dado existente é apagado pelos arquivos publicados neste repositório.
