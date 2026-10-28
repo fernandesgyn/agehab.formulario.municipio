@@ -49,18 +49,28 @@ Check(formulario.Contains("Dados.Infraestrutura["), "Q8 binding");
 Check(formulario.Contains("Dados.Estrutura"), "Q6 select");
 
 string sqlNovo = File.ReadAllText(Path.Combine("database", "schema.sql"));
-string sqlMigracao = File.ReadAllText(Path.Combine("database", "migracao-v2.sql"));
-Check(sqlNovo.Contains("CREATE TABLE dbo.RespostasMunicipaisV2"), "new SQL schema");
-Check(!sqlNovo.Contains("CREATE TABLE dbo.RespostasMunicipais ("), "no old schema in initial install");
-Check(sqlMigracao.Contains("IF OBJECT_ID(N'dbo.RespostasMunicipaisV2', N'U') IS NULL"), "idempotent migration");
-Check(!sqlMigracao.Contains("DROP TABLE"), "no table deletion");
-Check(!sqlMigracao.Contains("DELETE FROM"), "no deletion of older answers");
-Check(sqlMigracao.Contains("CK_RM2_Q2_CRESS_TOTAL"), "Q2 check constraint");
-Check(sqlMigracao.Contains("CK_RM2_Q3_EXCLUSIVOS_TOTAL"), "Q3 check constraint");
+Check(sqlNovo.Contains("CREATE DATABASE AGEHAB_FORMULARIO_MUNICIPIOS;"), "database creation");
+Check(sqlNovo.Contains("CREATE TABLE dbo.Municipios ("), "municipalities table");
+Check(sqlNovo.Contains("CREATE TABLE dbo.RespostasMunicipais ("), "single definitive answers table");
+Check(!sqlNovo.Contains("RespostasMunicipaisV2"), "no versioned table");
+Check(!sqlNovo.Contains("IF OBJECT_ID"), "no conditional DDL or migrations");
+Check(!sqlNovo.Contains("DROP TABLE"), "no destructive DDL");
+Check(!sqlNovo.Contains("DELETE FROM"), "no data deletion");
+Check(sqlNovo.Contains("CK_RM_Q2_CRESS_TOTAL"), "Q2 check constraint");
+Check(sqlNovo.Contains("CK_RM_Q3_EXCLUSIVOS_TOTAL"), "Q3 check constraint");
 foreach (var campo in QuestionarioDefinition.Campos)
-    Check(sqlMigracao.Contains(campo.Coluna + " INT NOT NULL"), "SQL numeric column " + campo.Coluna);
+    Check(sqlNovo.Contains(campo.Coluna + " INT NOT NULL"), "SQL numeric column " + campo.Coluna);
 foreach (var item in QuestionarioDefinition.Infraestrutura)
-    Check(sqlMigracao.Contains(item.Coluna + " BIT NOT NULL"), "SQL Boolean column " + item.Coluna);
+    Check(sqlNovo.Contains(item.Coluna + " BIT NOT NULL"), "SQL Boolean column " + item.Coluna);
+string repoText = File.ReadAllText(Path.Combine(root, "Services", "RespostaRepository.cs"));
+Check(repoText.Contains("INSERT INTO dbo.RespostasMunicipais"), "final answers table in repository");
+Check(!repoText.Contains("RespostasMunicipaisV2"), "repository has no V2");
+string diagnosticText = File.ReadAllText(Path.Combine(root, "Services", "SqlServerDiagnostic.cs"));
+Check(diagnosticText.Contains("OBJECT_ID(N'dbo.RespostasMunicipais'"), "diagnostic on final table");
+Check(!diagnosticText.Contains("migracao-v2"), "diagnostic is migration-free");
+Check(File.Exists(Path.Combine("database", "consultas.sql")), "queries for final schema");
+Check(!File.Exists(Path.Combine("database", "migracao-v2.sql")), "no migration file");
+Check(!File.Exists(Path.Combine("database", "consultas-v2.sql")), "no versioned query file");
 
 Check(SqlServerFailure.Classificar(18456).Codigo == "BD-ACESSO", "SQL auth");
 Check(SqlServerFailure.Classificar(208).Codigo == "BD-ESTRUTURA", "SQL schema");
@@ -80,7 +90,7 @@ string layout = File.ReadAllText(Path.Combine(root, "Pages", "Shared", "_Layout.
 Check(layout.Contains("Agência Goiana de Habitação - AGEHAB"), "institutional brand");
 Check(!layout.Contains("asp-page=\"/Admin/"), "no admin links");
 
-Console.WriteLine("OK: 246 municípios, 17 quantidades, 9 estruturas, 4 programas, 13 itens de infraestrutura, SQL V2.");
+Console.WriteLine("OK: 246 municípios, 17 quantidades, 9 estruturas, 4 programas, 13 itens de infraestrutura, SQL definitivo sem migrations.");
 
 sealed class StubEnvironment(string root) : IHostEnvironment
 {

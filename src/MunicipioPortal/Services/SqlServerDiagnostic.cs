@@ -20,7 +20,7 @@ public static class SqlServerDiagnostic
             await using var tabelas = new SqlCommand("""
                 SELECT
                     CASE WHEN OBJECT_ID(N'dbo.Municipios', N'U') IS NOT NULL THEN 1 ELSE 0 END,
-                    CASE WHEN OBJECT_ID(N'dbo.RespostasMunicipaisV2', N'U') IS NOT NULL THEN 1 ELSE 0 END;
+                    CASE WHEN OBJECT_ID(N'dbo.RespostasMunicipais', N'U') IS NOT NULL THEN 1 ELSE 0 END;
                 """, conexao);
             await using var leitor = await tabelas.ExecuteReaderAsync(token);
             await leitor.ReadAsync(token);
@@ -30,16 +30,16 @@ public static class SqlServerDiagnostic
             if (!municipios || !respostas)
             {
                 await saida.WriteLineAsync(
-                    "BD-ESTRUTURA: faltam dbo.Municipios ou dbo.RespostasMunicipaisV2.");
+                    "BD-ESTRUTURA: faltam dbo.Municipios ou dbo.RespostasMunicipais.");
                 await saida.WriteLineAsync(
-                    "Para um banco existente, execute database/migracao-v2.sql no SSMS.");
+                    "Estrutura não corresponde ao schema.sql. Instale-o apenas em banco novo, sem sobrescrever dados existentes.");
                 return 3;
             }
 
             var tabela = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             await using (var colunas = new SqlCommand("""
                 SELECT [name] FROM sys.columns
-                WHERE [object_id] = OBJECT_ID(N'dbo.RespostasMunicipaisV2');
+                WHERE [object_id] = OBJECT_ID(N'dbo.RespostasMunicipais');
                 """, conexao))
             await using (var rd = await colunas.ExecuteReaderAsync(token))
             {
@@ -61,7 +61,7 @@ public static class SqlServerDiagnostic
 
             await using var consulta = new SqlCommand("""
                 SELECT COUNT_BIG(*) FROM dbo.Municipios;
-                SELECT ISNULL(HAS_PERMS_BY_NAME('dbo.RespostasMunicipaisV2', 'OBJECT', 'INSERT'), 0);
+                SELECT ISNULL(HAS_PERMS_BY_NAME('dbo.RespostasMunicipais', 'OBJECT', 'INSERT'), 0);
                 """, conexao);
             await using var resultado = await consulta.ExecuteReaderAsync(token);
             await resultado.ReadAsync(token);
@@ -72,11 +72,11 @@ public static class SqlServerDiagnostic
 
             await saida.WriteLineAsync($"Municípios: {totalMunicipios} (esperado: 246).");
             await saida.WriteLineAsync(
-                "Permissão INSERT em RespostasMunicipaisV2: " +
+                "Permissão INSERT em RespostasMunicipais: " +
                 (podeInserir == 1 ? "OK" : "NEGADA"));
             if (totalMunicipios != 246 || podeInserir != 1) return 3;
 
-            await saida.WriteLineAsync("OK: SQL Server preparado para as novas respostas (V2).");
+            await saida.WriteLineAsync("OK: SQL Server preparado para o questionário atual.");
             return 0;
         }
         catch (SqlServerNaoConfiguradoException)

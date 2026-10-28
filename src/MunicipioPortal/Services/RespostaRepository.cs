@@ -4,7 +4,7 @@ using MunicipioPortal.Models;
 
 namespace MunicipioPortal.Services;
 
-/// <summary>Persistência na tabela V2, preservando o histórico na tabela anterior.</summary>
+/// <summary>Persistência no esquema definitivo dbo.RespostasMunicipais (SQL Server).</summary>
 public sealed class RespostaRepository(IConfiguration config)
 {
     public async Task<long> SalvarAsync(
@@ -24,7 +24,7 @@ public sealed class RespostaRepository(IConfiguration config)
             .Concat(itens.Select(i => "@" + i.Chave)).ToArray();
 
         string sql = $"""
-            INSERT INTO dbo.RespostasMunicipaisV2
+            INSERT INTO dbo.RespostasMunicipais
                 (CodigoIBGE, {string.Join(", ", colunas.Select(c => "[" + c + "]"))})
             OUTPUT INSERTED.Id
             VALUES (@CodigoIbge, {string.Join(", ", parametros)});
