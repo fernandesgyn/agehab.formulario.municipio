@@ -1,5 +1,5 @@
 -- Questões 1 a 8, uma linha por município, incluindo os não respondentes.
--- Execute no SQL Server Management Studio após aplicar migracao-v2.sql.
+-- Execute no SQL Server Management Studio após criar o banco usando schema.sql.
 USE AGEHAB_FORMULARIO_MUNICIPIOS;
 GO
 
@@ -63,8 +63,7 @@ SELECT
     CASE R.Q8_12 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.12 Iluminacao publica],
     CASE R.Q8_13 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.13 Posto policial]
 FROM dbo.Municipios AS M
-LEFT JOIN dbo.RespostasMunicipaisV2 AS R ON R.CodigoIBGE = M.CodigoIBGE
+LEFT JOIN dbo.RespostasMunicipais AS R ON R.CodigoIBGE = M.CodigoIBGE
 ORDER BY M.Nome;
 GO
 
--- A versão anterior, se existir, permanece em dbo.RespostasMunicipais.
