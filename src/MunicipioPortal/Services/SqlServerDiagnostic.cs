@@ -3,10 +3,7 @@ using MunicipioPortal.Models;
 
 namespace MunicipioPortal.Services;
 
-/// <summary>
-/// Verificação exclusiva por linha de comando, não expõe endpoint público.
-/// Apenas consulta conexão, estrutura e permissões; não insere dados ou executa DDL.
-/// </summary>
+/// <summary>Verifica somente leitura, sem expor endpoint na internet.</summary>
 public static class SqlServerDiagnostic
 {
     public static async Task<int> VerificarAsync(
@@ -23,7 +20,7 @@ public static class SqlServerDiagnostic
             await using var tabelas = new SqlCommand("""
                 SELECT
                     CASE WHEN OBJECT_ID(N'dbo.Municipios', N'U') IS NOT NULL THEN 1 ELSE 0 END,
-                    CASE WHEN OBJECT_ID(N'dbo.RespostasMunicipais', N'U') IS NOT NULL THEN 1 ELSE 0 END;
+                    CASE WHEN OBJECT_ID(N'dbo.RespostasMunicipaisV2', N'U') IS NOT NULL THEN 1 ELSE 0 END;
                 """, conexao);
             await using var leitor = await tabelas.ExecuteReaderAsync(token);
             await leitor.ReadAsync(token);
@@ -32,35 +29,39 @@ public static class SqlServerDiagnostic
             await leitor.CloseAsync();
             if (!municipios || !respostas)
             {
-                await saida.WriteLineAsync("BD-ESTRUTURA: faltam tabelas dbo.Municipios ou dbo.RespostasMunicipais.");
-                await saida.WriteLineAsync("Execute database/schema.sql em um banco novo (não o reaplique sobre dados existentes).");
+                await saida.WriteLineAsync(
+                    "BD-ESTRUTURA: faltam dbo.Municipios ou dbo.RespostasMunicipaisV2.");
+                await saida.WriteLineAsync(
+                    "Para um banco existente, execute database/migracao-v2.sql no SSMS.");
                 return 3;
             }
 
-            string[] campos = QuestionarioDefinition.Campos.Select(c => c.Coluna).ToArray();
             var tabela = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             await using (var colunas = new SqlCommand("""
                 SELECT [name] FROM sys.columns
-                WHERE [object_id] = OBJECT_ID(N'dbo.RespostasMunicipais');
+                WHERE [object_id] = OBJECT_ID(N'dbo.RespostasMunicipaisV2');
                 """, conexao))
-            await using (var colunasReader = await colunas.ExecuteReaderAsync(token))
+            await using (var rd = await colunas.ExecuteReaderAsync(token))
             {
-                while (await colunasReader.ReadAsync(token))
-                    tabela.Add(colunasReader.GetString(0));
+                while (await rd.ReadAsync(token)) tabela.Add(rd.GetString(0));
             }
 
-            string[] obrigatorias = ["Id", "CodigoIBGE", "ProgramaHabitacionalTipo",
-                "ProgramaProprioDetalhes", .. campos];
+            string[] obrigatorias = ["Id", "CodigoIBGE", "CriadoEm",
+                "Q6_ESTRUTURA", "Q6_OUTRA_DESCRICAO",
+                "Q7_PROGRAMA", "Q7_PROGRAMA_DETALHES",
+                .. QuestionarioDefinition.Campos.Select(c => c.Coluna),
+                .. QuestionarioDefinition.Infraestrutura.Select(i => i.Coluna)];
             string[] ausentes = obrigatorias.Where(c => !tabela.Contains(c)).ToArray();
             if (ausentes.Length > 0)
             {
-                await saida.WriteLineAsync("BD-ESTRUTURA: campos ausentes: " + string.Join(", ", ausentes));
+                await saida.WriteLineAsync(
+                    "BD-ESTRUTURA: campos ausentes: " + string.Join(", ", ausentes));
                 return 3;
             }
 
             await using var consulta = new SqlCommand("""
                 SELECT COUNT_BIG(*) FROM dbo.Municipios;
-                SELECT ISNULL(HAS_PERMS_BY_NAME('dbo.RespostasMunicipais', 'OBJECT', 'INSERT'), 0);
+                SELECT ISNULL(HAS_PERMS_BY_NAME('dbo.RespostasMunicipaisV2', 'OBJECT', 'INSERT'), 0);
                 """, conexao);
             await using var resultado = await consulta.ExecuteReaderAsync(token);
             await resultado.ReadAsync(token);
@@ -69,20 +70,19 @@ public static class SqlServerDiagnostic
             await resultado.ReadAsync(token);
             int podeInserir = resultado.GetInt32(0);
 
-            await saida.WriteLineAsync($"Municípios cadastrados: {totalMunicipios} (esperado: 246).");
-            await saida.WriteLineAsync("Permissão INSERT: " + (podeInserir == 1 ? "OK" : "NEGADA"));
-            if (totalMunicipios != 246 || podeInserir != 1)
-            {
-                await saida.WriteLineAsync("BD-PERMISSAO/ESTRUTURA: configuração SQL Server incompleta.");
-                return 3;
-            }
-            await saida.WriteLineAsync("OK: SQL Server pronto para receber respostas.");
+            await saida.WriteLineAsync($"Municípios: {totalMunicipios} (esperado: 246).");
+            await saida.WriteLineAsync(
+                "Permissão INSERT em RespostasMunicipaisV2: " +
+                (podeInserir == 1 ? "OK" : "NEGADA"));
+            if (totalMunicipios != 246 || podeInserir != 1) return 3;
+
+            await saida.WriteLineAsync("OK: SQL Server preparado para as novas respostas (V2).");
             return 0;
         }
         catch (SqlServerNaoConfiguradoException)
         {
             await saida.WriteLineAsync(
-                "BD-CONFIG: configure ConnectionStrings__Municipios no ambiente da aplicação.");
+                "BD-CONFIG: configure ConnectionStrings__Municipios no ambiente.");
             return 2;
         }
         catch (SqlException ex)
@@ -94,7 +94,7 @@ public static class SqlServerDiagnostic
         catch (Exception)
         {
             await saida.WriteLineAsync(
-                "BD-OPERACAO: falha ao validar o SQL Server. Confira configuração e logs do servidor.");
+                "BD-OPERACAO: falha ao validar SQL Server. Confira logs do servidor.");
             return 3;
         }
     }
