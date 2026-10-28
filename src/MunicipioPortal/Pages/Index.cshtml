@@ -1,104 +1,218 @@
 @page "/"
 @model MunicipioPortal.Pages.IndexModel
 @{
-    ViewData["Title"] = "Formulário para Municípios Goianos";
+    ViewData["Title"] = "Levantamento habitacional dos municípios goianos";
 }
 <div class="row justify-content-center">
 <div class="col-xl-10 col-xxl-9">
- <div class="card mb-4"><div class="card-body form-intro d-flex flex-column flex-md-row gap-3 align-items-md-center">
-  <div class="form-intro-icon"><i class="bi bi-buildings"></i></div>
-  <div><h4 class="mb-1">Levantamento de equipes e programas habitacionais</h4>
-  <p class="mb-0 text-muted">Informe os dados do seu município. Quando não houver profissionais em uma categoria, registre zero.</p></div>
- </div></div>
-
- @if (!string.IsNullOrEmpty(Model.ErroPersistencia))
- {
- <div class="alert alert-danger" role="alert">
-  <strong>Não foi possível registrar as respostas.</strong>
-  <p class="mb-0">@Model.ErroPersistencia</p>
- </div>
- }
- else if (!ViewData.ModelState.IsValid)
- {
- <div class="alert alert-danger" role="alert">
-  <strong>Confira os campos indicados no formulário.</strong>
-  <div asp-validation-summary="ModelOnly"></div>
- </div>
- }
- <form method="post" id="questionnaire-form" novalidate>
-  @Html.AntiForgeryToken()
-  <section class="card mb-4">
-   <div class="card-header"><h5 class="card-title mb-0">1. Identificação do município</h5></div>
-   <div class="card-body">
-    <label asp-for="Dados.CodigoIbge" class="form-label fw-semibold">Nome do município <span class="text-danger">*</span></label>
-    <select asp-for="Dados.CodigoIbge" class="form-select" required>
-     <option value="">Selecione um município de Goiás...</option>
-     @foreach (var municipio in Model.Municipios)
-     {
-      <option value="@municipio.CodigoIbge">@municipio.Nome</option>
-     }
-    </select>
-    <span asp-validation-for="Dados.CodigoIbge" class="text-danger small"></span>
-    <div class="form-text">Seleção entre os 246 municípios do Estado de Goiás.</div>
-   </div>
-  </section>
-
-  @foreach (var area in QuestionarioDefinition.Areas)
-  {
-   <section class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center gap-2">
-     <h5 class="card-title mb-0">@area.Numero. @area.Titulo</h5>
-     <span class="badge text-bg-light border">Questão @area.Numero</span>
+    <div class="card mb-4">
+        <div class="card-body form-intro d-flex flex-column flex-md-row gap-3 align-items-md-center">
+            <div class="form-intro-icon"><i class="bi bi-buildings"></i></div>
+            <div>
+                <h4 class="mb-1">Levantamento de equipes, organização e infraestrutura habitacional</h4>
+                <p class="mb-0 text-muted">
+                    Preencha todas as questões com informações do município.
+                    Para categorias sem profissionais, informe <strong>0 (zero)</strong>.
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-     <p class="text-muted small">Quantidade de profissionais por vínculo.</p>
-     <div class="row g-3">
-      @for (var i = 0; i < area.Campos.Count; i++)
-      {
-       var campo = area.Campos[i];
-       Model.Dados.Quantidades.TryGetValue(campo.Chave, out var valorAnterior);
-       <div class="col-12 col-sm-6">
-        <label for="@campo.Chave" class="form-label">@area.Numero.@(i + 1) @campo.Rotulo</label>
-        <input class="form-control count-input" type="number" inputmode="numeric" min="0" max="100000" step="1"
-          id="@campo.Chave" name="@($"Dados.Quantidades[{campo.Chave}]")" value="@(valorAnterior ?? "0")" data-area="@area.Numero" required>
-        @Html.ValidationMessage($"Dados.Quantidades[{campo.Chave}]", "", new { @class = "text-danger small" })
-       </div>
-      }
-     </div>
-    </div>
-    <div class="card-footer bg-body-tertiary d-flex justify-content-between align-items-center">
-     <span class="text-muted">Total de profissionais informados neste bloco</span>
-     <strong class="area-total" data-total="@area.Numero">0</strong>
-    </div>
-   </section>
-  }
 
-  <section class="card mb-4">
-   <div class="card-header"><h5 class="card-title mb-0">6. O Município possui algum Programa Habitacional próprio (entende-se como próprio programas com recursos exclusivos do município)</h5></div>
-   <div class="card-body">
-    <p class="mb-3">Escolha uma opção.</p>
-    @foreach (var programa in QuestionarioDefinition.Programas)
+    @if (!string.IsNullOrEmpty(Model.ErroPersistencia))
     {
-     <div class="form-check mb-3">
-      <input type="radio" asp-for="Dados.Programa" class="form-check-input" id="programa_@programa.Codigo" value="@programa.Codigo" required>
-      <label class="form-check-label" for="programa_@programa.Codigo">@programa.Titulo</label>
-     </div>
+        <div class="alert alert-danger" role="alert">
+            <strong>Não foi possível registrar as respostas.</strong>
+            <p class="mb-0">@Model.ErroPersistencia</p>
+        </div>
     }
-    <span asp-validation-for="Dados.Programa" class="text-danger small"></span>
-    <div id="programa-detalhes-group" class="mt-3 p-3 rounded border bg-body-tertiary" hidden>
-     <label asp-for="Dados.Detalhes" class="form-label fw-semibold">6.1. Qual nome do Programa? Qual benefício o programa concede? (lote, casa, ajuda de custo, etc.) <span class="text-danger">*</span></label>
-     <textarea asp-for="Dados.Detalhes" class="form-control" rows="4" maxlength="2000"
-        placeholder="Ex.: nome do programa; concessão de lotes, casas ou ajuda de custo."></textarea>
-     <span asp-validation-for="Dados.Detalhes" class="text-danger small"></span>
-    </div>
-   </div>
-  </section>
-  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 pb-4">
-   <span class="small text-muted"><i class="bi bi-shield-check me-1"></i>As informações serão armazenadas no SQL Server da AGEHAB.</span>
-   <button type="submit" class="btn btn-success px-4" id="send-form"><i class="bi bi-check2-circle me-1"></i>Enviar formulário</button>
-  </div>
- </form>
-</div></div>
+    else if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" role="alert">
+            <strong>Confira as informações indicadas abaixo.</strong>
+            <div asp-validation-summary="ModelOnly"></div>
+        </div>
+    }
+
+    <form method="post" id="questionnaire-form" novalidate>
+        @Html.AntiForgeryToken()
+
+        <section class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">1. Nome do Município</h5></div>
+            <div class="card-body">
+                <label asp-for="Dados.CodigoIbge" class="form-label fw-semibold">
+                    Selecione o município <span class="text-danger">*</span>
+                </label>
+                <select asp-for="Dados.CodigoIbge" class="form-select" required>
+                    <option value="">Selecione um município de Goiás...</option>
+                    @foreach (var municipio in Model.Municipios)
+                    {
+                        <option value="@municipio.CodigoIbge">@municipio.Nome</option>
+                    }
+                </select>
+                <span asp-validation-for="Dados.CodigoIbge" class="text-danger small"></span>
+            </div>
+        </section>
+
+        @foreach (var area in QuestionarioDefinition.Areas)
+        {
+            <section class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@area.Numero. @area.Titulo</h5>
+                </div>
+                <div class="card-body">
+                    @if (area.Orientacao is not null)
+                    {
+                        <p class="form-instruction text-muted">@area.Orientacao</p>
+                    }
+                    <div class="row g-3">
+                        @foreach (var campo in area.Campos)
+                        {
+                            Model.Dados.Quantidades.TryGetValue(campo.Chave, out var valorAnterior);
+                            <div class="@(campo.SomaTotal && area.Numero != 5 ? "col-12 col-sm-6" : "col-12")">
+                                <label for="@campo.Chave" class="form-label">
+                                    <strong>@campo.Item</strong> @campo.Rotulo
+                                </label>
+                                <input class="form-control count-input" type="number"
+                                       inputmode="numeric" min="0" max="100000" step="1"
+                                       id="@campo.Chave"
+                                       name="@($"Dados.Quantidades[{campo.Chave}]")"
+                                       value="@(valorAnterior ?? "0")"
+                                       data-area="@(campo.SomaTotal ? area.Numero.ToString() : "")"
+                                       required>
+                                @Html.ValidationMessage(
+                                    $"Dados.Quantidades[{campo.Chave}]", "",
+                                    new { @class = "text-danger small" })
+                            </div>
+                        }
+                    </div>
+                    @if (area.Numero == 2 || area.Numero == 3)
+                    {
+                        <p class="form-text mt-3 mb-0">
+                            O quantitativo do item @area.Numero.5 não pode ser superior à soma dos vínculos
+                            @area.Numero.1 a @area.Numero.4.
+                        </p>
+                    }
+                </div>
+                <div class="card-footer bg-body-tertiary d-flex justify-content-between gap-3 align-items-center">
+                    <span class="text-muted">
+                        @(area.Numero == 5 ? "Total nas categorias informadas" : "Total por vínculo informado")
+                    </span>
+                    <strong class="area-total" data-total="@area.Numero">0</strong>
+                </div>
+            </section>
+        }
+
+        <section class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">6. Qual a estrutura organizacional responsável pela Habitação e pelo Trabalho Social</h5>
+            </div>
+            <div class="card-body">
+                <label asp-for="Dados.Estrutura" class="form-label">Escolha uma opção <span class="text-danger">*</span></label>
+                <select asp-for="Dados.Estrutura" class="form-select" required>
+                    <option value="">Selecione a estrutura organizacional...</option>
+                    @foreach (var opcao in QuestionarioDefinition.Estruturas)
+                    {
+                        <option value="@opcao.Codigo">@opcao.Titulo</option>
+                    }
+                </select>
+                <span asp-validation-for="Dados.Estrutura" class="text-danger small"></span>
+
+                <div id="estrutura-outra-group" class="mt-3 p-3 rounded border bg-body-tertiary" hidden>
+                    <label asp-for="Dados.EstruturaOutra" class="form-label fw-semibold">
+                        Descreva a outra estrutura <span class="text-danger">*</span>
+                    </label>
+                    <textarea asp-for="Dados.EstruturaOutra" class="form-control"
+                              rows="2" maxlength="300"
+                              placeholder="Informe qual estrutura é responsável pela habitação."></textarea>
+                    <span asp-validation-for="Dados.EstruturaOutra" class="text-danger small"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    7. O Município possui algum Programa Habitacional próprio
+                    (entende-se como próprio programas com recursos exclusivos do município)
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">Escolha uma opção.</p>
+                @foreach (var programa in QuestionarioDefinition.Programas)
+                {
+                    <div class="form-check mb-3">
+                        <input type="radio" asp-for="Dados.Programa"
+                               class="form-check-input" id="programa_@programa.Codigo"
+                               value="@programa.Codigo" required>
+                        <label class="form-check-label" for="programa_@programa.Codigo">@programa.Titulo</label>
+                    </div>
+                }
+                <span asp-validation-for="Dados.Programa" class="text-danger small"></span>
+                <div id="programa-detalhes-group" class="mt-3 p-3 rounded border bg-body-tertiary" hidden>
+                    <label asp-for="Dados.Detalhes" class="form-label fw-semibold">
+                        Qual nome do Programa? Qual benefício o programa concede?
+                        (lote, casa, ajuda de custo, etc.) <span class="text-danger">*</span>
+                    </label>
+                    <textarea asp-for="Dados.Detalhes" class="form-control" rows="4"
+                              maxlength="2000"
+                              placeholder="Informe o nome do programa e qual benefício ele concede."></textarea>
+                    <span asp-validation-for="Dados.Detalhes" class="text-danger small"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    8.0 Acesso aos Serviços Públicos e às Condições de Infraestrutura Local
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="form-instruction text-muted">
+                    Considerando o local de implantação das Unidades Habitacionais do Programa
+                    Pra Ter Onde Morar - Casa a Custo Zero.
+                </p>
+                <p class="mb-3 fw-semibold">Responda Sim ou Não para cada item.</p>
+                <div class="infra-list">
+                    @foreach (var item in QuestionarioDefinition.Infraestrutura)
+                    {
+                        Model.Dados.Infraestrutura.TryGetValue(item.Chave, out var escolhaAnterior);
+                        <div class="row g-2 align-items-center py-3 infra-row">
+                            <div class="col-12 col-md-9">
+                                <label for="@item.Chave" class="form-label mb-0">
+                                    <strong>@item.Item</strong> @item.Texto
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <select id="@item.Chave"
+                                        name="@($"Dados.Infraestrutura[{item.Chave}]")"
+                                        class="form-select" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="SIM" selected="@(escolhaAnterior == "SIM")">Sim</option>
+                                    <option value="NAO" selected="@(escolhaAnterior == "NAO")">Não</option>
+                                </select>
+                                @Html.ValidationMessage(
+                                    $"Dados.Infraestrutura[{item.Chave}]", "",
+                                    new { @class = "text-danger small" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 pb-4">
+            <span class="small text-muted">
+                <i class="bi bi-shield-check me-1"></i>
+                As informações serão armazenadas no banco de dados da AGEHAB.
+            </span>
+            <button type="submit" class="btn btn-success px-4" id="send-form">
+                <i class="bi bi-check2-circle me-1"></i>Enviar formulário
+            </button>
+        </div>
+    </form>
+</div>
+</div>
 @section Scripts {
- <script src="~/js/formulario.js" asp-append-version="true"></script>
+    <script src="~/js/formulario.js" asp-append-version="true"></script>
 }
