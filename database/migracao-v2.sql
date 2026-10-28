@@ -3,7 +3,9 @@
 USE AGEHAB_FORMULARIO_MUNICIPIOS;
 GO
 IF OBJECT_ID(N'dbo.Municipios', N'U') IS NULL
-    THROW 50001, 'Tabela dbo.Municipios ausente. Instale a base antes de criar a versão 2.', 1;
+BEGIN
+    ;THROW 50001, 'Tabela dbo.Municipios ausente. Instale a base antes de criar a versão 2.', 1;
+END;
 GO
 IF OBJECT_ID(N'dbo.RespostasMunicipaisV2', N'U') IS NULL
 BEGIN

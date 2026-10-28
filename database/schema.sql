@@ -260,7 +260,9 @@ GO
 -- Questionário 2026 - versão 2.
 -- Respostas de instalações antigas são mantidas na tabela legado, se existir.
 IF OBJECT_ID(N'dbo.Municipios', N'U') IS NULL
-    THROW 50001, 'Tabela dbo.Municipios ausente. Instale a base antes de criar a versão 2.', 1;
+BEGIN
+    ;THROW 50001, 'Tabela dbo.Municipios ausente. Instale a base antes de criar a versão 2.', 1;
+END;
 GO
 IF OBJECT_ID(N'dbo.RespostasMunicipaisV2', N'U') IS NULL
 BEGIN

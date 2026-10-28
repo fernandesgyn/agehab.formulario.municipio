@@ -49,19 +49,19 @@ SELECT
     END AS [7 - Programa],
     R.Q7_PROGRAMA_DETALHES AS [7 - Programa próprio e benefício],
     -- Serviços e infraestrutura (questão 8)
-    CASE R.Q8_01 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [01 - Q8_01],
-    CASE R.Q8_02 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [02 - Q8_02],
-    CASE R.Q8_03 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [03 - Q8_03],
-    CASE R.Q8_04 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [04 - Q8_04],
-    CASE R.Q8_05 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [05 - Q8_05],
-    CASE R.Q8_06 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [06 - Q8_06],
-    CASE R.Q8_07 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [07 - Q8_07],
-    CASE R.Q8_08 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [08 - Q8_08],
-    CASE R.Q8_09 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [09 - Q8_09],
-    CASE R.Q8_10 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [10 - Q8_10],
-    CASE R.Q8_11 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [11 - Q8_11],
-    CASE R.Q8_12 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [12 - Q8_12],
-    CASE R.Q8_13 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [13 - Q8_13]
+    CASE R.Q8_01 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.1 CMEI ate 1 km],
+    CASE R.Q8_02 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.2 Ensino Fundamental I ate 1,5 km],
+    CASE R.Q8_03 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.3 Ensino Fundamental II ate 1,5 km],
+    CASE R.Q8_04 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.4 Esporte e lazer ate 1,5 km],
+    CASE R.Q8_05 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.5 CRAS ou CREAS ate 2 km],
+    CASE R.Q8_06 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.6 Posto de Saude ate 2,5 km],
+    CASE R.Q8_07 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.7 Comercio cotidiano ate 1 km],
+    CASE R.Q8_08 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.8 Comercio e servicos eventuais ate 1,5 km],
+    CASE R.Q8_09 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.9 Coleta de materiais reciclaveis],
+    CASE R.Q8_10 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.10 Limpeza urbana],
+    CASE R.Q8_11 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.11 Asfaltamento],
+    CASE R.Q8_12 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.12 Iluminacao publica],
+    CASE R.Q8_13 WHEN 1 THEN N'Sim' WHEN 0 THEN N'Não' END AS [8.13 Posto policial]
 FROM dbo.Municipios AS M
 LEFT JOIN dbo.RespostasMunicipaisV2 AS R ON R.CodigoIBGE = M.CodigoIBGE
 ORDER BY M.Nome;
